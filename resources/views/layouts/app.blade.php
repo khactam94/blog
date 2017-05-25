@@ -12,13 +12,13 @@
 
     <!-- Styles -->
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css')}}">
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{{ asset('js/jquery.min.js')}}"></script>
 
     <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{{ asset('js/bootstrap.min.js')}}"></script>
     @yield('css')
     <!-- Scripts -->
     <script>
@@ -55,7 +55,16 @@
                         <li class="{{ Request::is('category*') ? 'active' : '' }}"><a href="{{route('categories.index')}}">Categories</a></li>
                         <li class="{{ Request::is('tag*') ? 'active' : '' }}"><a href="{{route('tags.index')}}">Tags</a></li>
                     </ul>
-
+                    <div class="col-sm-3 col-md-3">
+                        <form class="navbar-form" role="search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search" name="q">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->

@@ -75,8 +75,8 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
-        $post->view = $post->view + 1;
-        $post->save();
+        //$post->increment('view');
+        //$post->save();
         Event::fire('posts.view', $post);
         return view('posts.show',compact('post'));
     }

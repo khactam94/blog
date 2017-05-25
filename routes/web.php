@@ -26,7 +26,7 @@ Route::get('tag/search', ['as' => 'tagAjax', 'uses' => 'TagController@search']);
 Route::get('auth/facebook', 'Auth\AuthController@redirectToFacebook');
 Route::get('auth/facebook/callback', 'Auth\AuthController@handleFacebookCallback');
 
-Route::resource('posts', 'PostController');
+Route::resource('posts', 'PostController', ['middleware' => 'filter']);
 
 Route::resource('tags', 'TagController');
 

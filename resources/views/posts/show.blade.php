@@ -10,18 +10,22 @@
         <div class="row">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                <div class="row">
-                        <div class="pull-left" style="margin-left: 20px">
-                            <h2>Post</h2>
-                        </div>
-                        <div class="pull-right" style="margin: 20px">
-                            <a class="btn btn-success" href="{{ route('posts.index') }}"> Back</a>
-                        </div>
-                    </div>
-                    <hr>
                     <h2>{{$post->title}}</h2>
                     <div class="row" style="padding: 20px">
-                        <p>View: {{$post->view}}; Author: {{$post->user->name}}; Date: {{$post->created_at}}</p>
+                        <p style="float: left;"> 
+                                            <i class="fa fa-user" aria-hidden="true"></i>By:<a href="#">{{ $post->user->name}}</a>|
+                                        </p>
+                                        <p style="float: left;">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>{{ $post->created_at->format('d/m/Y') }}|
+                                        </p>
+                                        <p style="float: left;">
+                                            <i class="fa fa-comments" aria-hidden="true"></i><a href="#"> {{ $post->view }} viewer</a>|
+                                        </p>
+                                        <p style="float: left;"> Categories:
+                                            @foreach($post->categories as $category)
+                                            <span class="label label-primary">{{ $category->name }}</span>
+                                            @endforeach
+                                        </p>
                     </div>
                 </div>
 

@@ -75,6 +75,8 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
+        $post->view = $post->view + 1;
+        $post->save();
         Event::fire('posts.view', $post);
         return view('posts.show',compact('post'));
     }
@@ -101,8 +103,24 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, Post::$rules);
-
-        Post::find($id)->update($request->all());
+        $input = $request->all();
+        $status = Post::find($id)->update($input);
+        if(!$status) return back()->with('error', 'Update post failed.'); 
+        $post = Post::find($id);
+        $categories = explode(', ', $input['categories']);
+        $tags = explode(', ', $input['tags']);
+        foreach ($categories as $key => $category) {
+            $categories[$key] = Category::where('name', $category)->first()->id;
+        }
+        foreach ($tags as $key => $tag) {
+            $tags[$key] = Tag::where('name', $tag)->first()->id;
+        }
+        if($request->has('categories')) {
+            $post->categories()->sync($categories);
+        }
+        if($request->has('tags')) {
+            $post->tags()->sync($tags);
+        }
         return redirect()->route('posts.index')
             ->with('success','Post updated successfully');
     }

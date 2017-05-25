@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css')
+   
+@endsection
+
 @section('content')
     <section class="content-header">
         <h1>
@@ -19,4 +23,8 @@
            </div>
        </div>
    </div>
+@endsection
+
+@section('scripts')
+
 @endsection

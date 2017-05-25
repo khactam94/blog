@@ -15,11 +15,11 @@
 </div>
 <div class="form-group col-sm-12">
     {!! Form::label('categories', 'Categories:') !!}
-    {!! Form::text('categories', null, ['class' => 'form-control', 'id'=>'categorytoken', 'placeholder'=>'Categories']) !!}
+    {!! Form::text('categories', empty($post->categories) ? '' : implode(',', $post->categories->pluck('name')->toArray()), ['class' => 'form-control', 'id'=>'categorytoken', 'placeholder'=>'Categories']) !!}
 </div>
 <div class="form-group col-sm-12">
     {!! Form::label('tags', 'Tag:') !!}
-    {!! Form::text('tags', null, ['class' => 'form-control', 'id'=>'tagtoken', 'placeholder'=>'Tags']) !!}
+    {!! Form::text('tags', empty($post->tags) ? '': implode(',', $post->tags->pluck('name')->toArray()), ['class' => 'form-control', 'id'=>'tagtoken', 'placeholder'=>'Tags']) !!}
 </div>
 {!! Form::submit('submit', ['class' => 'btn btn-success']); !!}
 <a href="{!! route('posts.index') !!}" class="btn btn-default">Cancel</a>

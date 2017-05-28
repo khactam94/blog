@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\User;
+use App\Models\User;
 use App\Models\Tag;
 use App\Models\Category;
 class Post extends Model
@@ -12,7 +12,8 @@ class Post extends Model
     public $fillable = [
         'title',
         'content',
-        'user_id'
+        'user_id',
+        'status'
     ];
     /**
      * Validation rules

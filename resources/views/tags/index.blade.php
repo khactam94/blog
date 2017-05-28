@@ -9,9 +9,6 @@
                         <div class="pull-left" style="margin-left: 20px">
                             <h2>Tags List</h2>
                         </div>
-                        <div class="pull-right" style="margin: 20px">
-                            <a class="btn btn-success" href="{{ route('tags.create') }}"> Add New</a>
-                        </div>
                     </div>
                 </div>
 

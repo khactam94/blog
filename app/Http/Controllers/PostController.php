@@ -10,9 +10,21 @@ use App\Models\Category;
 use App\Models\CategoriesPost;
 use App\Models\Tag;
 use App\Models\TagsPost;
+use App\Models\User;
 
-class PostController extends Controller
+class PostController extends AppBaseController
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list(Request $request)
+    {
+        $posts = Post::where('status', 2)->orderBy('id','DESC')->paginate(5);
+        return view('posts.list',compact('posts'))
+            ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +32,8 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::orderBy('id','DESC')->paginate(5);
+        if (Auth::guest()) return back();
+        $posts = Post::where('user_id', Auth::user()->id)->orderBy('id','DESC')->paginate(5);
         return view('posts.index',compact('posts'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
@@ -32,6 +45,7 @@ class PostController extends Controller
      */
     public function create()
     {
+        if (Auth::guest()) return back();
         return view('posts.create');
     }
 
@@ -43,26 +57,28 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        if (Auth::guest()) return back();
         $this->validate($request, Post::$rules);
         $input =[];
         $input = $request->all();
         $input['user_id'] = Auth::user()->id;
         $input['view'] = 0;
+        $input['status'] = 0;
         
         $post = Post::create($input);
         $categories = explode(', ', $input['categories']);
         $tags = explode(', ', $input['tags']);
-        //dd($categories);
         foreach ($categories as $category) {
-            $category = Category::where('name', $category)->get()[0];
-
+            $category = Category::where('name', $category)->first();
+            if($category == null) continue;
             CategoriesPost::create(['post_id' => $post->id, 'category_id' => $category->id]);
         }
         foreach ($tags as $tag) {
-            $tag = Tag::where('name', $tag)->get()[0];
+            $tag = Tag::where('name', $tag)->first();
+            if($tag == null) continue;
             TagsPost::create(['post_id' => $post->id, 'tag_id' => $tag->id]);
         }
-        return redirect()->route('posts.index')
+        return redirect()->route('my-posts.index')
             ->with('success','posts created successfully');
     }
 
@@ -74,7 +90,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::find($id);
+        if (Auth::guest()) return back();
+        $post = Post::where('user_id', Auth::user()->id)->find($id);
+        if($post == null) return back();
         //$post->increment('view');
         //$post->save();
         Event::fire('posts.view', $post);
@@ -89,7 +107,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::find($id);
+        if (Auth::guest()) return back();
+        $post = Post::where('user_id', Auth::user()->id)->find($id);
+        if($post == null) return back();
         return view('posts.edit',compact('post'));
     }
 
@@ -102,11 +122,13 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (Auth::guest()) return back();
         $this->validate($request, Post::$rules);
         $input = $request->all();
-        $status = Post::find($id)->update($input);
+        $status = Post::where('user_id', Auth::user()->id)->find($id)->update($input);
         if(!$status) return back()->with('error', 'Update post failed.'); 
         $post = Post::find($id);
+        if($post == null) return back();
         $categories = explode(', ', $input['categories']);
         $tags = explode(', ', $input['tags']);
         foreach ($categories as $key => $category) {
@@ -121,10 +143,9 @@ class PostController extends Controller
         if($request->has('tags')) {
             $post->tags()->sync($tags);
         }
-        return redirect()->route('posts.index')
+        return redirect()->route('my-posts.index')
             ->with('success','Post updated successfully');
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -133,7 +154,9 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
+        if (Auth::guest()) return back();
+        $post = Post::where('user_id', Auth::user()->id)->find($id);
+        if($post == null) return back();
         foreach ($post->tags as $key => $tag) {
             TagsPost::where('tag_id', $tag->id)->where('post_id', $post->id)->delete();
         }
@@ -141,7 +164,7 @@ class PostController extends Controller
             CategoriesPost::where('category_id', $category->id)->where('post_id', $post->id)->delete();
         }
         $post->delete();
-        return redirect()->route('posts.index')
+        return redirect()->route('my-posts.index')
             ->with('success','Post deleted successfully');
     }
 }

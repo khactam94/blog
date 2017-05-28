@@ -20,7 +20,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"><h2>Edit a post</h2></div>
                     <div class="panel-body">
-                    	{!! Form::model($post, ['route' => ['posts.update', $post->id], 'method' => 'patch', 'files' => true]) !!}
+                    	{!! Form::model($post, ['route' => ['my-posts.update', $post->id], 'method' => 'patch', 'files' => true]) !!}
                         @include('posts.fields')
                         {!! Form::close() !!}
                     </div>

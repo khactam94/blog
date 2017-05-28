@@ -13,13 +13,23 @@
         CKEDITOR.replace( 'posteditor',config);
     </script>
 </div>
-<div class="form-group col-sm-12">
+<div class="form-group col-sm-10">
     {!! Form::label('categories', 'Categories:') !!}
     {!! Form::text('categories', empty($post->categories) ? '' : implode(',', $post->categories->pluck('name')->toArray()), ['class' => 'form-control', 'id'=>'categorytoken', 'placeholder'=>'Categories']) !!}
 </div>
-<div class="form-group col-sm-12">
+<div class="form-group col-sm-2">
+    <label>&nbsp;</label>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#add-category" disabled="true">Add a category</button>
+</div>
+<div class="form-group col-sm-10">
     {!! Form::label('tags', 'Tag:') !!}
     {!! Form::text('tags', empty($post->tags) ? '': implode(',', $post->tags->pluck('name')->toArray()), ['class' => 'form-control', 'id'=>'tagtoken', 'placeholder'=>'Tags']) !!}
 </div>
+<div class="form-group col-sm-2">
+    <label>&nbsp;</label>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#add-tag" disabled="true">Add a tag</button>
+</div>
+<div class="form-group col-sm-12">
 {!! Form::submit('submit', ['class' => 'btn btn-success']); !!}
-<a href="{!! route('posts.index') !!}" class="btn btn-default">Cancel</a>
+<a href="{!! route('my-posts.index') !!}" class="btn btn-default">Cancel</a>
+</div>

@@ -10,7 +10,7 @@
                             <h2>Post List</h2>
                         </div>
                         <div class="pull-right" style="margin: 20px">
-                            <a class="btn btn-success" href="{{ route('posts.create') }}"> Create New Post</a>
+                            <a class="btn btn-success" href="{{ route('my-posts.create') }}"> Create New Post</a>
                         </div>
                     </div>
                 </div>
@@ -33,11 +33,11 @@
                             <tr>
                                 <td>{{ ++$i }}</td>
                                 <td>{{ $post->title }}</td>
-                                <td>{{ $post->view }}</td>
+                                <td>{{ \Illuminate\Support\Str::words(strip_tags($post->content), 15, '...') }}</td>
                                 <td>
-                                    <a class="btn btn-info" href="{{ route('posts.show',$post->id) }}">Show</a>
-                                    <a class="btn btn-primary" href="{{ route('posts.edit',$post->id) }}">Edit</a>
-                                    {!! Form::open(['method' => 'DELETE','route' => ['posts.destroy', $post->id],'style'=>'display:inline']) !!}
+                                    <a class="btn btn-info" href="{{ route('my-posts.show',$post->id) }}">Show</a>
+                                    <a class="btn btn-primary" href="{{ route('my-posts.edit',$post->id) }}">Edit</a>
+                                    {!! Form::open(['method' => 'DELETE','route' => ['my-posts.destroy', $post->id],'style'=>'display:inline']) !!}
                                     {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                                     {!! Form::close() !!}
                                 </td>

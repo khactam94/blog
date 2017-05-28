@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\User;
+use App\Models\User;
 use Validator;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -60,6 +60,7 @@ class AuthController extends Controller
             Auth::loginUsingId($createdUser->id);
             return redirect()->route('home');
         } catch (Exception $e) {
+            dd($e);
             return redirect('/login')->withErrors('Facebook account is not available!');;
         }
     }

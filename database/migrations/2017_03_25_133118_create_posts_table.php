@@ -17,6 +17,7 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('content');
+            $table->integer('status')->default('0');
             $table->integer('view')->default('0');
             $table->integer('user_id')->unsigned();
             $table->timestamps();

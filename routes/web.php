@@ -25,7 +25,8 @@ Route::get('auth/facebook', 'Auth\AuthController@redirectToFacebook');
 
 Route::get('auth/facebook/callback', 'Auth\AuthController@handleFacebookCallback');
 
-Route::get('posts', 'PostController@list')->name('posts.list');
+Route::get('posts', 'PostController@recentlyPosts')->name('posts.list');
+Route::get('posts/{id}', 'PostController@view')->name('posts.view');
 
 Route::get('tags', 'TagController@index')->name('tags.list');
 

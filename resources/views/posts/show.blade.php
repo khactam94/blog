@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.app')
 
 @section('css')
     <link href="{{ asset('ckeditor/plugins/codesnippet/lib/highlight/styles/default.css')}}" rel="stylesheet">

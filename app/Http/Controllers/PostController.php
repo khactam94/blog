@@ -19,12 +19,13 @@ class PostController extends AppBaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function list(Request $request)
+    public function recentlyPosts(Request $request)
     {
         $posts = Post::where('status', 2)->orderBy('id','DESC')->paginate(5);
         return view('posts.list',compact('posts'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -88,14 +89,26 @@ class PostController extends AppBaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function view($id)
+    {
+        $post = Post::find($id);
+        if($post == null) return back();
+        //$post->increment('view');
+        //$post->save();
+        Event::fire('posts.view', $post);
+        return view('posts.show',compact('post'));
+    }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function show($id)
     {
         if (Auth::guest()) return back();
         $post = Post::where('user_id', Auth::user()->id)->find($id);
         if($post == null) return back();
-        //$post->increment('view');
-        //$post->save();
-        Event::fire('posts.view', $post);
         return view('posts.show',compact('post'));
     }
 

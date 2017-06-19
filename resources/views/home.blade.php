@@ -13,7 +13,7 @@
                         @foreach ($posts as $key => $post)
                             <tr>
                             <td>
-                                <h2><a href="{{ route('posts.show', ['id' => $post->id])}}">{{ $post->title }}</a></h2>
+                                <h2><a href="{{ route('posts.view', ['id' => $post->id])}}">{{ $post->title }}</a></h2>
                                 <div>{{ \Illuminate\Support\Str::words(strip_tags($post->content), 115, '...') }}</div>
                                 <p>{{ $post->author }}
                                     <div class="category" style="display: inline-block;">

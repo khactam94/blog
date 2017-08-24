@@ -44,7 +44,9 @@ class PostController extends AppBaseController
      */
     public function store(Request $request)
     {
+        
         $this->validate($request, Post::$rules);
+        dd($request);
         $input =[];
         $input = $request->all();
         $input['user_id'] = Auth::user()->id;

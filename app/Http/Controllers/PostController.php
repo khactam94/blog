@@ -58,7 +58,6 @@ class PostController extends AppBaseController
      */
     public function store(Request $request)
     {
-        if (Auth::guest()) return back();
         $this->validate($request, Post::$rules);
         $input =[];
         $input = $request->all();

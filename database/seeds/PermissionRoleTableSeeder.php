@@ -44,7 +44,7 @@ class PermissionRoleTableSeeder extends Seeder
         ];
 
         foreach ($roles as $key => $role) {
-        	PermissionRole::create($role);
+        	DB::table('permission_role')->insert($role);
         }
     }
 }

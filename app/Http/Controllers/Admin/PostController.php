@@ -46,7 +46,6 @@ class PostController extends AppBaseController
     {
         
         $this->validate($request, Post::$rules);
-        dd($request);
         $input =[];
         $input = $request->all();
         $input['user_id'] = Auth::user()->id;

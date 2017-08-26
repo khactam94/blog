@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CreateRoleRequest;
-use App\Http\Requests\UpdateRoleRequest;
-use App\Models\PermissionRole;
-use App\Models\Role;
+use Illuminate\Http\Request;
+use App\Http\Requests\Admin\StoreRoleRequest;
+use App\Http\Requests\Admin\UpdateRoleRequest;
+
 use App\Repositories\RoleRepository;
 use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
-use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
+
 use App\Models\Permission;
+use App\Models\PermissionRole;
+use App\Models\Role;
+
+use Prettus\Repository\Criteria\RequestCriteria;
+use Flash;
+use Response;
 
 
 class RoleController extends AppBaseController
@@ -58,12 +61,13 @@ class RoleController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateRoleRequest $request)
+    public function store(StoreRoleRequest $request)
     {
         $input = $request->all();
 
         $role = $this->roleRepository->create($input);
-
+        
+        if($request->has('permission'))
         foreach ($request->input('permission') as $key => $value) {
             $role->attachPermission($value);
         }
@@ -143,7 +147,8 @@ class RoleController extends AppBaseController
 
         PermissionRole::where("permission_role.role_id",$id)
             ->delete();
-
+            
+        if($request->has('permission'))
         foreach ($request->input('permission') as $key => $value) {
             $role->attachPermission($value);
         }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 
 use Illuminate\Http\Request;
+use App\Http\Requests\Admin\StoreCategoryRequest;
+use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Http\Controllers\AppBaseController;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Models\Category;
@@ -24,7 +26,12 @@ class CategoryController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $categories = Category::orderBy('id','DESC')->paginate(10);
+        if($request->has('q')){
+            $categories = Category::where('name', 'like', '%'.$request->input('q').'%')->orderBy('id','DESC')->paginate(10);
+        }
+        else {
+            $categories = Category::orderBy('id','DESC')->paginate(10);
+        }
 
         return view('admin.categories.index')
             ->with('categories', $categories);
@@ -54,14 +61,14 @@ class CategoryController extends AppBaseController
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
         $input = $request->all();
 
         $category = Category::create($input);
+        Flash::success('Category saved successfully.');
 
-        return redirect(route('categories.index'))
-            ->with('success' , 'Category saved successfully.');
+        return redirect(route('categories.index'));
     }
 
     /**
@@ -111,7 +118,7 @@ class CategoryController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, Request $request)
+    public function update($id, UpdateCategoryRequest $request)
     {
         $category = Category::find($id);
 
@@ -122,8 +129,9 @@ class CategoryController extends AppBaseController
         }
 
         $category->update($request->all());
+        Flash::success('Category updated successfully.');
 
-        return redirect(route('categories.index'))->with('success', 'Category updated successfully.');
+        return redirect(route('categories.index'));
     }
 
     /**
@@ -138,10 +146,13 @@ class CategoryController extends AppBaseController
         $category = Category::find($id);
 
         if (empty($category)) {
-            return redirect(route('categories.index'))->with('error', 'Category not found');
+            Flash::error('Category not found');
+
+            return redirect(route('categories.index'));
         }
 
         $category->delete();
+        Flash::success('Category deleted successfully.');
 
         return redirect(route('categories.index'))->with('success', 'Category deleted successfully.');
     }

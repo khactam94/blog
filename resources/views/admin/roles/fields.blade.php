@@ -2,6 +2,11 @@
 <div class="form-group col-sm-6 col-sm-offset-1">
     {!! Form::label('name', 'Name:') !!}
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
+    @if($errors->has('name'))
+        <p class="alert alert-danger msg">
+            {{ $errors->first('name') }}
+        </p>
+    @endif
 </div>
 
 <!-- Display Name Field -->
@@ -19,13 +24,13 @@
 <div class="form-group col-sm-6 col-sm-offset-1">
         {!! Form::label('permission', 'Permission:') !!}
         <div class="row">
-            <div class="checkbox col-sm-6 col-md-6">
             @foreach($permission as $value)
+            <div class="checkbox col-sm-6 col-md-6">
                 <label>{{ Form::checkbox('permission[]', $value->id, (!isset($rolePermissions) || !in_array($value->id, $rolePermissions) )? false : true, array('class' => 'name')) }}
                     {{ $value->display_name }}
                 </label>
-            @endforeach
             </div>
+            @endforeach
         </div>
 </div>
 

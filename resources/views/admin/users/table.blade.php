@@ -1,5 +1,6 @@
 <table class="table table-responsive" id="users-table">
     <thead>
+        <th>No.</th>
         <th>Name</th>
         <th>Email</th>
         <th>Password</th>
@@ -9,6 +10,7 @@
     <tbody>
     @foreach($users as $user)
         <tr>
+            <td>{!! $loop->iteration !!}</td>
             <td>{!! $user->name !!}</td>
             <td>{!! $user->email !!}</td>
             <td>{!! $user->password !!}</td>

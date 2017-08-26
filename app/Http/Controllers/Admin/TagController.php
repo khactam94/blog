@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 
 use Illuminate\Http\Request;
+use App\Http\Requests\Admin\StoreTagRequest;
+use App\Http\Requests\Admin\UpdateTagRequest;
 use App\Http\Controllers\AppBaseController;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Models\Tag;
@@ -55,11 +57,9 @@ class TagController extends AppBaseController
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(StoreTagRequest $request)
     {
-        $input = $request->all();
-
-        $tag = Tag::create($input);
+        $tag = Tag::create($request->all());
 
         return redirect(route('tags.index'))
             ->with('success' , 'Tag saved successfully.');
@@ -68,8 +68,8 @@ class TagController extends AppBaseController
     /**
      * Display the specified Tag.
      *
-     * @param  int $id
-     find     * @return Response
+     * @param  int $id     
+     * @return Response
      */
     public function show($id)
     {
@@ -112,7 +112,7 @@ class TagController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, Request $request)
+    public function update($id, UpdateTagRequest $request)
     {
         $tag = Tag::find($id);
 

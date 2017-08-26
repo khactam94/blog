@@ -14,6 +14,7 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css')}}">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <!-- jQuery library -->
     <script src="{{ asset('js/jquery.min.js')}}"></script>
 
@@ -50,20 +51,20 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li class="{{ Request::is('admin/post*') ? 'active' : '' }}"><a href="{{route('posts.index')}}">Posts</a></li>
-                        <li class="{{ Request::is('admin/category*') ? 'active' : '' }}"><a href="{{route('categories.index')}}">Categories</a></li>
-                        <li class="{{ Request::is('admin/tag*') ? 'active' : '' }}"><a href="{{route('tags.index')}}">Tags</a></li>
+                        <li class="{{ Request::is('admin/posts*') ? 'active' : '' }}"><a href="{{route('posts.index')}}">Posts</a></li>
+                        <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}"><a href="{{route('categories.index')}}">Categories</a></li>
+                        <li class="{{ Request::is('admin/tags*') ? 'active' : '' }}"><a href="{{route('tags.index')}}">Tags</a></li>
                         <li class="dropdown {{ Request::is('admin/users*') || Request::is('admin/roles*') || Request::is('admin/permissions*') ? 'active' : '' }}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Accounts <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                              <li><a href="{{route('users.index')}}">Users</a></li>
-                              <li><a href="{{route('roles.index')}}">Roles</a></li>
-                              <li><a href="{{route('permissions.index')}}">Permissions</a></li>
+                              <li class="{{ Request::is('admin/users*') ? 'active' : '' }}"><a href="{{route('users.index')}}">Users</a></li>
+                              <li class="{{ Request::is('admin/roles*') ? 'active' : '' }}"><a href="{{route('roles.index')}}">Roles</a></li>
+                              <li class="{{ Request::is('admin/permissions*') ? 'active' : '' }}"><a href="{{route('permissions.index')}}">Permissions</a></li>
                             </ul>
                         </li>
                     </ul>
                     <div class="col-sm-3 col-md-3">
-                        <form class="navbar-form" role="search">
+                        <form class="navbar-form" role="search" method="GET">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search" name="q">
                             <div class="input-group-btn">

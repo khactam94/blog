@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
+use App\Http\Requests\Admin\StoreUserRequest;
+use App\Http\Requests\Admin\UpdateUserRequest;
 use DB;
-use Hash;
 
 class UserController extends Controller
 {
@@ -21,6 +21,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users = User::orderBy('id','DESC')->paginate(5);
+
         return view('admin.users.index',compact('users'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
@@ -33,6 +34,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all()->pluck('display_name','id');
+
         return view('admin.users.create',compact('roles'));
     }
 
@@ -42,12 +44,11 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UpdateUserRequest $request)
+    public function store(StoreUserRequest $request)
     {
-        $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
-
-        $user = User::create($input);
+        $user = User::create($request->all());
+        
+        if($request->has('roles'))
         foreach ($request->input('roles') as $key => $value) {
             $user->attachRole($value);
         }
@@ -65,6 +66,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
+
         return view('admin.users.show',compact('user'));
     }
 
@@ -90,27 +92,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-            'password' => 'same:confirm-password',
-            'roles' => 'required'
-        ]);
-
-        $input = $request->all();
-        if(!empty($input['password'])){
-            $input['password'] = Hash::make($input['password']);
-        }else{
-            $input = array_except($input,array('password'));
-        }
-
         $user = User::find($id);
-        $user->update($input);
+        $user->update($request->all());
+
         DB::table('role_user')->where('user_id',$id)->delete();
-
-
+        if($request->has('roles'))
         foreach ($request->input('roles') as $key => $value) {
             $user->attachRole($value);
         }
@@ -128,6 +116,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         User::find($id)->delete();
+
         return redirect()->route('users.index')
             ->with('success','User deleted successfully');
     }

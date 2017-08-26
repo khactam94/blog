@@ -2,6 +2,11 @@
 <div class="form-group col-sm-6">
     {!! Form::label('name', 'Name:') !!}
     {!! Form::text('name', null, ['class' => 'form-control', 'id'=>'tagtoken']) !!}
+    @if($errors->has('name'))
+        <p class="alert alert-danger msg">
+            {{ $errors->first('name') }}
+        </p>
+    @endif
 </div>
 
 <!-- Submit Field -->

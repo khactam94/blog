@@ -22,6 +22,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$this->route('user'),
+            'password' => 'same:confirm-password',
         ];
     }
 }

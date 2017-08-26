@@ -1,15 +1,18 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <section class="content-header">
-        <h1>
-            Permission Info
-        </h1>
-    </section>
-    <div class="content">
-        <div class="box box-primary">
-            <div class="box-body">
-                <div class="row" style="padding-left: 20px">
+     <div class="container">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="pull-left" style="margin-left: 20px">
+                            <h2>Permission</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body">
                     @include('admin.permissions.show_fields')
                     <a href="{!! route('permissions.index') !!}" class="btn btn-default">Back</a>
                 </div>

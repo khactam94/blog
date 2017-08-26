@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\Admin\StorePostRequest;
+use App\Http\Requests\Admin\UpdatePostRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use App\Models\Post;
@@ -42,28 +44,33 @@ class PostController extends AppBaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        
-        $this->validate($request, Post::$rules);
         $input =[];
         $input = $request->all();
         $input['user_id'] = Auth::user()->id;
         $input['view'] = 0;
         
         $post = Post::create($input);
-        $categories = explode(', ', $input['categories']);
-        $tags = explode(', ', $input['tags']);
-        //dd($categories);
-        foreach ($categories as $category) {
-            $category = Category::where('name', $category)->get()[0];
+        if($request->has('categories')) {
+            $categories = explode(',', $request->input('categories'));
+            $category_ids =[];
+            foreach ($categories as $key => $value) {
+                $category = Category::where('name', trim($value))->first();
+                $category ? $category_ids[$key] = $category->id : null;
+            }
+            $post->categories()->sync($category_ids);
+        }
+        if($request->has('tags')) {
+            $tags = explode(',', $request->input('tags'));
+            $tag_ids = [];
+            foreach ($tags as $key => $value) {
+                $tag = Tag::where('name', $value)->first();
+                $tag ? $tag_ids[$key] = $tag->id : null;
+            }
+            $post->tags()->sync($tag_ids);
+        }
 
-            CategoriesPost::create(['post_id' => $post->id, 'category_id' => $category->id]);
-        }
-        foreach ($tags as $tag) {
-            $tag = Tag::where('name', $tag)->get()[0];
-            TagsPost::create(['post_id' => $post->id, 'tag_id' => $tag->id]);
-        }
         return redirect()->route('posts.index')
             ->with('success','posts created successfully');
     }
@@ -77,9 +84,7 @@ class PostController extends AppBaseController
     public function show($id)
     {
         $post = Post::find($id);
-        //$post->increment('view');
-        //$post->save();
-        Event::fire('admin.posts.view', $post);
+        
         return view('admin.posts.show',compact('post'));
     }
 
@@ -102,27 +107,31 @@ class PostController extends AppBaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, $id)
     {
-        $this->validate($request, Post::$rules);
-        $input = $request->all();
-        $status = Post::find($id)->update($input);
-        if(!$status) return back()->with('error', 'Update post failed.'); 
         $post = Post::find($id);
-        $categories = explode(', ', $input['categories']);
-        $tags = explode(', ', $input['tags']);
-        foreach ($categories as $key => $category) {
-            $categories[$key] = Category::where('name', $category)->first()->id;
-        }
-        foreach ($tags as $key => $tag) {
-            $tags[$key] = Tag::where('name', $tag)->first()->id;
-        }
+        $status = $post->update($request->all());
+        if(!$status) return back()->with('error', 'Update post failed.'); 
+
         if($request->has('categories')) {
-            $post->categories()->sync($categories);
+            $categories = explode(',', $request->input('categories'));
+            $category_ids =[];
+            foreach ($categories as $key => $value) {
+                $category = Category::where('name', trim($value))->first();
+                $category ? $category_ids[$key] = $category->id : null;
+            }
+            $post->categories()->sync($category_ids);
         }
         if($request->has('tags')) {
-            $post->tags()->sync($tags);
+            $tags = explode(',', $request->input('tags'));
+            $tag_ids = [];
+            foreach ($tags as $key => $value) {
+                $tag = Tag::where('name', $value)->first();
+                $tag ? $tag_ids[$key] = $tag->id : null;
+            }
+            $post->tags()->sync($tag_ids);
         }
+
         return redirect()->route('posts.index')
             ->with('success','Post updated successfully');
     }
@@ -132,6 +141,7 @@ class PostController extends AppBaseController
         if($post == null) return response()->json(['message' => 'Not found your post', 'status' => false]);
         $post->status ==2;
         $post->save();
+
         return response()->json([ 'post' => $post, 'message' => 'Updated successfully', 'status' => true]);
     }
     /**
@@ -143,13 +153,16 @@ class PostController extends AppBaseController
     public function destroy($id)
     {
         $post = Post::find($id);
+        // Remove all tags
         foreach ($post->tags as $key => $tag) {
             TagsPost::where('tag_id', $tag->id)->where('post_id', $post->id)->delete();
         }
+        // Remove all categories
         foreach ($post->categories as $key => $category) {
             CategoriesPost::where('category_id', $category->id)->where('post_id', $post->id)->delete();
         }
         $post->delete();
+
         return redirect()->route('posts.index')
             ->with('success','Post deleted successfully');
     }

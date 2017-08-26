@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Requests\Admin;
 use Illuminate\Foundation\Http\FormRequest;
-class StoreTagRequest extends FormRequest
+class UpdateRoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,7 +20,7 @@ class StoreTagRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required||unique:tags,name',
+            'name' => 'required|unique:roles,name,'.$this->route('role'),
         ];
     }
 }

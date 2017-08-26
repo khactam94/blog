@@ -1,20 +1,26 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <section class="content-header">
-        <h1 class="pull-left">Role list</h1>
-        <h1 class="pull-right">
-           <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('roles.create') !!}">Add New</a>
-        </h1>
-    </section>
-    <div class="content">
-        <div class="clearfix"></div>
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="pull-left" style="margin-left: 20px">
+                            <h2>Role List</h2>
+                        </div>
+                        <div class="pull-right" style="margin: 20px">
+                            <a class="btn btn-success" href="{!! route('roles.create') !!}"> Create Role</a>
+                        </div>
+                    </div>
+                </div>
 
-        @include('flash::message')
-
-        <div class="clearfix"></div>
-        <div class="box box-primary">
-            <div class="box-body">
+                <div class="panel-body">
+                    @if ($message = Session::get('success'))
+                        <div class="alert alert-success">
+                            <p>{{ $message }}</p>
+                        </div>
+                    @endif
                     @include('admin.roles.table')
             </div>
         </div>

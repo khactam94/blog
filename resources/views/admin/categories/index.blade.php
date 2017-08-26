@@ -16,6 +16,7 @@
                 </div>
 
                 <div class="panel-body">
+                    @include('flash::message')
                     @include('admin.categories.table')
                 </div>
             </div>

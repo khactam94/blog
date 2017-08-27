@@ -14,7 +14,7 @@
 
                 <div class="panel-body">
                     @foreach($tags as $tag)
-                        <a href="#" class="btn btn-primary">{{ $tag->name }} ({{ $tag->posts->count()}})</a> 
+                        <a href="{{ route('tags.show', ['id' => $tag->id])}}" class="btn btn-primary">{{ $tag->name }} ({{ $tag->posts->count()}})</a> 
                     @endforeach
                 </div>
             </div>

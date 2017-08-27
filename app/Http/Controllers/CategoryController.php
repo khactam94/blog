@@ -24,7 +24,7 @@ class CategoryController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $categories = Category::orderBy('id','DESC')->paginate(10);
+        $categories = Category::all();
 
         return view('categories.index')
             ->with('categories', $categories);
@@ -38,33 +38,6 @@ class CategoryController extends AppBaseController
     }
 
     /**
-     * Show the form for creating a new Category.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        return view('categories.create');
-    }
-
-    /**
-     * Store a newly created Category in storage.
-     *
-     * @param CreateCategoryRequest $request
-     *
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        $input = $request->all();
-
-        $category = Category::create($input);
-
-        return redirect(route('categories.index'))
-            ->with('success' , 'Category saved successfully.');
-    }
-
-    /**
      * Display the specified Category.
      *
      * @param  int $id
@@ -72,77 +45,8 @@ class CategoryController extends AppBaseController
      */
     public function show($id)
     {
-        $category = Category::find($id);
-
-        if (empty($category)) {
-            Flash::error('Category not found');
-
-            return redirect(route('categories.index'));
-        }
-
-        return view('categories.show')->with('category', $category);
-    }
-
-    /**
-     * Show the form for editing the specified Category.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function edit($id)
-    {
-        $category = Category::find($id);
-
-        if (empty($category)) {
-            Flash::error('Category not found');
-
-            return redirect(route('categories.index'));
-        }
-
-        return view('categories.edit')->with('category', $category);
-    }
-
-    /**
-     * Update the specified Category in storage.
-     *
-     * @param  int              $id
-     * @param UpdateCategoryRequest $request
-     *
-     * @return Response
-     */
-    public function update($id, Request $request)
-    {
-        $category = Category::find($id);
-
-        if (empty($category)) {
-            Flash::error('Category not found');
-
-            return redirect(route('categories.index'));
-        }
-
-        $category->update($request->all());
-
-        return redirect(route('categories.index'))->with('success', 'Category updated successfully.');
-    }
-
-    /**
-     * Remove the specified Category from storage.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        $category = Category::find($id);
-
-        if (empty($category)) {
-            return redirect(route('categories.index'))->with('error', 'Category not found');
-        }
-
-        $category->delete();
-
-        return redirect(route('categories.index'))->with('success', 'Category deleted successfully.');
+        $category = Category::findOrFail($id);
+        $posts = $category->posts;
+        return view('categories.show')->with('posts', $posts);
     }
 }

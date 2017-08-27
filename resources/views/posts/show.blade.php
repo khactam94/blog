@@ -34,7 +34,8 @@
                 		<div id='posteditor' class="pull-left" style="padding: 50px">
                             {!! $post->content !!}
                         </div>
-                        <script>hljs.initHighlightingOnLoad();</script>
+                        <script src="http://giaphiep.com/plugins/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js"></script>
+ 	                    <script>hljs.initHighlightingOnLoad();</script>
                     </div>
                     <hr>
                     <div class="row" style="margin-left: 10px;">

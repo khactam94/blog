@@ -71,7 +71,7 @@ class PostController extends AppBaseController
             $post->tags()->sync($tag_ids);
         }
 
-        return redirect()->route('posts.index')
+        return redirect()->route('admin.posts.index')
             ->with('success','posts created successfully');
     }
 
@@ -83,7 +83,7 @@ class PostController extends AppBaseController
      */
     public function show($id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
         
         return view('admin.posts.show',compact('post'));
     }
@@ -96,7 +96,7 @@ class PostController extends AppBaseController
      */
     public function edit($id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
         return view('admin.posts.edit',compact('post'));
     }
 
@@ -109,7 +109,7 @@ class PostController extends AppBaseController
      */
     public function update(UpdatePostRequest $request, $id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
         $status = $post->update($request->all());
         if(!$status) return back()->with('error', 'Update post failed.'); 
 
@@ -132,12 +132,12 @@ class PostController extends AppBaseController
             $post->tags()->sync($tag_ids);
         }
 
-        return redirect()->route('posts.index')
+        return redirect()->route('admin.posts.index')
             ->with('success','Post updated successfully');
     }
 
     public function approvePost($id){
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
         if($post == null) return response()->json(['message' => 'Not found your post', 'status' => false]);
         $post->status ==2;
         $post->save();
@@ -152,7 +152,7 @@ class PostController extends AppBaseController
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
         // Remove all tags
         foreach ($post->tags as $key => $tag) {
             TagsPost::where('tag_id', $tag->id)->where('post_id', $post->id)->delete();
@@ -163,7 +163,7 @@ class PostController extends AppBaseController
         }
         $post->delete();
 
-        return redirect()->route('posts.index')
+        return redirect()->route('admin.posts.index')
             ->with('success','Post deleted successfully');
     }
 }

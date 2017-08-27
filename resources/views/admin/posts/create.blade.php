@@ -18,7 +18,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"><h2>Create a post</h2></div>
                     <div class="panel-body">
-                        {!! Form::open(['route' => 'posts.store']) !!}
+                        {!! Form::open(['route' => 'admin.posts.store']) !!}
                         @include('admin.posts.fields')
                         {!! Form::close() !!}
                     </div>

@@ -18,19 +18,15 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('category/search', ['as' => 'categoryAjax', 'uses' => 'CategoryController@search']);
-
 Route::get('tag/search', ['as' => 'tagAjax', 'uses' => 'TagController@search']);
 
 Route::get('auth/facebook', 'Auth\AuthController@redirectToFacebook');
-
 Route::get('auth/facebook/callback', 'Auth\AuthController@handleFacebookCallback');
 
 Route::get('posts', 'PostController@index')->name('posts.index');
 Route::get('posts/{id}', 'PostController@show')->name('posts.show');
-
-Route::get('tags', 'TagController@index')->name('tags.list');
-
-Route::get('categories', 'TagController@index')->name('categories.list');
+Route::get('tags', 'TagController@index')->name('tags.index');
+Route::get('categories', 'CategoryController@index')->name('categories.index');
 
 // For memeber
 Route::group(['middleware' => ['auth']], function(){

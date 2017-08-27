@@ -13,7 +13,9 @@
                 </div>
 
                 <div class="panel-body">
-                    @include('tags.table')
+                    @foreach($tags as $tag)
+                        <a href="#" class="btn btn-primary">{{ $tag->name }} ({{ $tag->posts->count()}})</a> 
+                    @endforeach
                 </div>
             </div>
         </div>

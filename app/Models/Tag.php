@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Post;
 
 class Tag extends Model
 {
@@ -17,5 +18,10 @@ class Tag extends Model
     public static $rules = [
         'name' => 'required|unique'
     ];
+
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, 'tags_posts');
+    }
 
 }

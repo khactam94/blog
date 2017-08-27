@@ -51,8 +51,8 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         <li class="{{ Request::is('post*') ? 'active' : '' }}"><a href="{{route('posts.index')}}">Posts</a></li>
-                        <li class="{{ Request::is('category*') ? 'active' : '' }}"><a href="{{route('categories.list')}}">Categories</a></li>
-                        <li class="{{ Request::is('tag*') ? 'active' : '' }}"><a href="{{route('tags.list')}}">Tags</a></li>
+                        <li class="{{ Request::is('category*') ? 'active' : '' }}"><a href="{{route('categories.index')}}">Categories</a></li>
+                        <li class="{{ Request::is('tag*') ? 'active' : '' }}"><a href="{{route('tags.index')}}">Tags</a></li>
                     </ul>
                     <div class="col-sm-3 col-md-3">
                         <form class="navbar-form" role="search">

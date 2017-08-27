@@ -74,7 +74,7 @@ class RoleController extends AppBaseController
 
         Flash::success('Role saved successfully.');
 
-        return redirect(route('roles.index'));
+        return redirect(route('admin.roles.index'));
     }
 
     /**
@@ -91,7 +91,7 @@ class RoleController extends AppBaseController
         if (empty($role)) {
             Flash::error('Role not found');
 
-            return redirect(route('roles.index'));
+            return redirect(route('admin.roles.index'));
         }
         $rolePermissions = Permission::join("permission_role","permission_role.permission_id","=","permissions.id")
             ->where("permission_role.role_id",$id)
@@ -114,7 +114,7 @@ class RoleController extends AppBaseController
         if (empty($role)) {
             Flash::error('Role not found');
 
-            return redirect(route('roles.index'));
+            return redirect(route('admin.roles.index'));
         }
 
         $permission = Permission::get();
@@ -140,7 +140,7 @@ class RoleController extends AppBaseController
         if (empty($role)) {
             Flash::error('Role not found');
 
-            return redirect(route('roles.index'));
+            return redirect(route('admin.roles.index'));
         }
 
         $role = $this->roleRepository->update($request->all(), $id);
@@ -155,7 +155,7 @@ class RoleController extends AppBaseController
         
         Flash::success('Role updated successfully.');
 
-        return redirect(route('roles.index'));
+        return redirect(route('admin.roles.index'));
     }
 
     /**
@@ -172,13 +172,13 @@ class RoleController extends AppBaseController
         if (empty($role)) {
             Flash::error('Role not found');
 
-            return redirect(route('roles.index'));
+            return redirect(route('admin.roles.index'));
         }
 
         Role::where('id',$id)->delete();
 
         Flash::success('Role '.$role->name.' deleted successfully.');
 
-        return redirect(route('roles.index'));
+        return redirect(route('admin.roles.index'));
     }
 }

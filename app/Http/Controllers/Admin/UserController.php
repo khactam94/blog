@@ -53,7 +53,7 @@ class UserController extends Controller
             $user->attachRole($value);
         }
 
-        return redirect()->route('users.index')
+        return redirect()->route('admin.users.index')
             ->with('success','User created successfully');
     }
 
@@ -103,7 +103,7 @@ class UserController extends Controller
             $user->attachRole($value);
         }
 
-        return redirect()->route('users.index')
+        return redirect()->route('admin.users.index')
             ->with('success','User updated successfully');
     }
 
@@ -117,7 +117,7 @@ class UserController extends Controller
     {
         User::find($id)->delete();
 
-        return redirect()->route('users.index')
+        return redirect()->route('admin.users.index')
             ->with('success','User deleted successfully');
     }
 }

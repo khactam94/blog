@@ -10,7 +10,6 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row" style="padding-left: 20px">
-                    @include('tags.show_fields')
                     <a href="{!! route('tags.index') !!}" class="btn btn-default">Back</a>
                 </div>
             </div>

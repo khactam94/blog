@@ -32,14 +32,6 @@ class TagController extends AppBaseController
             ->with('tags', $tags);
     }
 
-    public function search(Request $request)
-    {
-        $tags = Tag::where('name', 'like', '%'.$request->input('query').'%')->paginate(10)->pluck('name');
-
-        return json_encode($tags);
-    }
-
-
     /**
      * Show the form for creating a new Tag.
      *
@@ -61,7 +53,7 @@ class TagController extends AppBaseController
     {
         $tag = Tag::create($request->all());
 
-        return redirect(route('tags.index'))
+        return redirect(route('admin.tags.index'))
             ->with('success' , 'Tag saved successfully.');
     }
 
@@ -78,7 +70,7 @@ class TagController extends AppBaseController
         if (empty($tag)) {
             Flash::error('Tag not found');
 
-            return redirect(route('tags.index'));
+            return redirect(route('admin.tags.index'));
         }
 
         return view('admin.tags.show')->with('tag', $tag);
@@ -98,7 +90,7 @@ class TagController extends AppBaseController
         if (empty($tag)) {
             Flash::error('Tag not found');
 
-            return redirect(route('tags.index'));
+            return redirect(route('admin.tags.index'));
         }
 
         return view('admin.tags.edit')->with('tag', $tag);
@@ -119,12 +111,12 @@ class TagController extends AppBaseController
         if (empty($tag)) {
             Flash::error('Tag not found');
 
-            return redirect(route('tags.index'));
+            return redirect(route('admin.tags.index'));
         }
 
         $tag->update($request->all());
 
-        return redirect(route('tags.index'))->with('success', 'Tag updated successfully.');
+        return redirect(route('admin.tags.index'))->with('success', 'Tag updated successfully.');
     }
 
     /**
@@ -139,11 +131,11 @@ class TagController extends AppBaseController
         $tag = Tag::find($id);
 
         if (empty($tag)) {
-            return redirect(route('tags.index'))->with('error', 'Tag not found');
+            return redirect(route('admin.tags.index'))->with('error', 'Tag not found');
         }
 
         $tag->delete();
 
-        return redirect(route('tags.index'))->with('success', 'Tag deleted successfully.');
+        return redirect(route('admin.tags.index'))->with('success', 'Tag deleted successfully.');
     }
 }

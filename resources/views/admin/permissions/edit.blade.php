@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="panel-body">
-                   {!! Form::model($permission, ['route' => ['permissions.update', $permission->id], 'method' => 'patch']) !!}
+                   {!! Form::model($permission, ['route' => ['admin.permissions.update', $permission->id], 'method' => 'patch']) !!}
 
                         @include('admin.permissions.fields')
 

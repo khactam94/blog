@@ -36,16 +36,7 @@
                         </div>
                         <script>hljs.initHighlightingOnLoad();</script>
                     </div>
-                    <div class="row" style="margin-left: 10px;">
-                        <div class="category">
-                            <h3>Categories:</h3> 
-                            <p>
-                                @foreach($post->categories as $category)
-                                <span class="label label-primary">{{ $category->name }}</span>
-                                @endforeach
-                            </p>
-                        </div>
-                    </div>
+                    <hr>
                     <div class="row" style="margin-left: 10px;">
                         <div class="tag">
                             <h3>Tags:</h3> 

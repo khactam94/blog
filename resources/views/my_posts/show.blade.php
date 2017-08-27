@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('css')
     <link href="{{ asset('ckeditor/plugins/codesnippet/lib/highlight/styles/default.css')}}" rel="stylesheet">
@@ -36,6 +36,7 @@
                         </div>
                         <script>hljs.initHighlightingOnLoad();</script>
                     </div>
+                    <hr>
                     <div class="row" style="margin-left: 10px;">
                         <div class="category">
                             <h3>Categories:</h3> 
@@ -55,6 +56,13 @@
                                 @endforeach
                             </p>
                         </div>
+                    </div>
+                    <div class="row" style="margin-left: 10px;">
+                        <a class="btn btn-primary" href="{{ route('my_posts.edit',$post->id) }}">Edit</a>
+                        {!! Form::open(['method' => 'DELETE','route' => ['my_posts.destroy', $post->id],'style'=>'display:inline']) !!}
+                        {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                        {!! Form::close() !!}
+                        <a href="{!! route('my_posts.index') !!}" class="btn btn-default">Back</a>
                     </div>
                 </div>
             </div>

@@ -50,7 +50,7 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li class="{{ Request::is('post*') ? 'active' : '' }}"><a href="{{route('posts.list')}}">Posts</a></li>
+                        <li class="{{ Request::is('post*') ? 'active' : '' }}"><a href="{{route('posts.index')}}">Posts</a></li>
                         <li class="{{ Request::is('category*') ? 'active' : '' }}"><a href="{{route('categories.list')}}">Categories</a></li>
                         <li class="{{ Request::is('tag*') ? 'active' : '' }}"><a href="{{route('tags.list')}}">Tags</a></li>
                     </ul>
@@ -82,11 +82,11 @@
                                 <ul class="dropdown-menu" role="menu">
                                     @if( Auth::user()->hasRole('admin'))
                                         <li>
-                                            <a href="{{route('posts.index')}}">All posts</a>
+                                            <a href="{{route('admin.posts.index')}}">All posts</a>
                                         </li>
                                     @endif
                                     <li>
-                                        <a href="{{route('my-posts.index')}}">My posts</a>
+                                        <a href="{{route('my_posts.index')}}">My posts</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('logout') }}"

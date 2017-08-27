@@ -27,7 +27,7 @@
                             <p>{{ $message }}</p>
                         </div>
                     @endif
-                   {!! Form::model($role, ['route' => ['roles.update', $role->id], 'method' => 'patch']) !!}
+                   {!! Form::model($role, ['route' => ['admin.roles.update', $role->id], 'method' => 'patch']) !!}
 
                         @include('admin.roles.fields')
 

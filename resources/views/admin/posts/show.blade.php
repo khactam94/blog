@@ -58,11 +58,11 @@
                         </div>
                     </div>
                     <div class="row" style="margin-left: 10px;">
-                        <a class="btn btn-primary" href="{{ route('posts.edit',$post->id) }}">Edit</a>
-                        {!! Form::open(['method' => 'DELETE','route' => ['posts.destroy', $post->id],'style'=>'display:inline']) !!}
+                        <a class="btn btn-primary" href="{{ route('admin.posts.edit',$post->id) }}">Edit</a>
+                        {!! Form::open(['method' => 'DELETE','route' => ['admin.posts.destroy', $post->id],'style'=>'display:inline']) !!}
                         {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                         {!! Form::close() !!}
-                        <a href="{!! route('posts.index') !!}" class="btn btn-default">Back</a>
+                        <a href="{!! route('admin.posts.index') !!}" class="btn btn-default">Back</a>
                     </div>
                 </div>
             </div>

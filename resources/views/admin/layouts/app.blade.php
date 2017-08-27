@@ -51,15 +51,15 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li class="{{ Request::is('admin/posts*') ? 'active' : '' }}"><a href="{{route('posts.index')}}">Posts</a></li>
-                        <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}"><a href="{{route('categories.index')}}">Categories</a></li>
-                        <li class="{{ Request::is('admin/tags*') ? 'active' : '' }}"><a href="{{route('tags.index')}}">Tags</a></li>
+                        <li class="{{ Request::is('admin/posts*') ? 'active' : '' }}"><a href="{{route('admin.posts.index')}}">Posts</a></li>
+                        <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}"><a href="{{route('admin.categories.index')}}">Categories</a></li>
+                        <li class="{{ Request::is('admin/tags*') ? 'active' : '' }}"><a href="{{route('admin.tags.index')}}">Tags</a></li>
                         <li class="dropdown {{ Request::is('admin/users*') || Request::is('admin/roles*') || Request::is('admin/permissions*') ? 'active' : '' }}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Accounts <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                              <li class="{{ Request::is('admin/users*') ? 'active' : '' }}"><a href="{{route('users.index')}}">Users</a></li>
-                              <li class="{{ Request::is('admin/roles*') ? 'active' : '' }}"><a href="{{route('roles.index')}}">Roles</a></li>
-                              <li class="{{ Request::is('admin/permissions*') ? 'active' : '' }}"><a href="{{route('permissions.index')}}">Permissions</a></li>
+                              <li class="{{ Request::is('admin/users*') ? 'active' : '' }}"><a href="{{route('admin.users.index')}}">Users</a></li>
+                              <li class="{{ Request::is('admin/roles*') ? 'active' : '' }}"><a href="{{route('admin.roles.index')}}">Roles</a></li>
+                              <li class="{{ Request::is('admin/permissions*') ? 'active' : '' }}"><a href="{{route('admin.permissions.index')}}">Permissions</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -91,6 +91,11 @@
                                 
                                 @endif
                                 <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{ route('my_posts.index') }}">
+                                            My posts
+                                        </a>
+                                    </li>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();

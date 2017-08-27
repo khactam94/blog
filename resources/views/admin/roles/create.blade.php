@@ -27,7 +27,7 @@
                             <p>{{ $message }}</p>
                         </div>
                     @endif
-                    {!! Form::open(['route' => 'roles.store']) !!}
+                    {!! Form::open(['route' => 'admin.roles.store']) !!}
 
                         @include('admin.roles.fields')
 

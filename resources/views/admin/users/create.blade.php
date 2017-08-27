@@ -27,7 +27,7 @@
                             <p>{{ $message }}</p>
                         </div>
                     @endif
-                    {!! Form::open(array('route' => 'users.store','method'=>'POST')) !!}
+                    {!! Form::open(array('route' => 'admin.users.store','method'=>'POST')) !!}
 
                         @include('admin.users.fields')
 

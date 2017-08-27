@@ -14,7 +14,7 @@
 
                 <div class="panel-body">
                     @include('admin.categories.show_fields')
-                    <a href="{!! route('categories.index') !!}" class="btn btn-default">Back</a>
+                    <a href="{!! route('admin.categories.index') !!}" class="btn btn-default">Back</a>
                 </div>
             </div>
         </div>

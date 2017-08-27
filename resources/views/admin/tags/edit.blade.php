@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="panel-body">
-                    {!! Form::model($tag, ['route' => ['tags.update', $tag->id], 'method' => 'patch']) !!}
+                    {!! Form::model($tag, ['route' => ['admin.tags.update', $tag->id], 'method' => 'patch']) !!}
                         @include('admin.tags.fields')
                      {!! Form::close() !!}
                 </div>

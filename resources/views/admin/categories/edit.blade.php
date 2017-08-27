@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="panel-body">
-                   {!! Form::model($category, ['route' => ['categories.update', $category->id], 'method' => 'patch']) !!}
+                   {!! Form::model($category, ['route' => ['admin.categories.update', $category->id], 'method' => 'patch']) !!}
 
                         @include('admin.categories.fields')
 

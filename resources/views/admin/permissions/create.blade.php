@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="panel-body">
-                    {!! Form::open(['route' => 'permissions.store']) !!}
+                    {!! Form::open(['route' => 'admin.permissions.store']) !!}
 
                         @include('admin.permissions.fields')
 

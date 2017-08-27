@@ -10,7 +10,7 @@
                             <h2>Role List</h2>
                         </div>
                         <div class="pull-right" style="margin: 20px">
-                            <a class="btn btn-success" href="{!! route('roles.create') !!}"> Create Role</a>
+                            <a class="btn btn-success" href="{!! route('admin.roles.create') !!}"> Create Role</a>
                         </div>
                     </div>
                 </div>

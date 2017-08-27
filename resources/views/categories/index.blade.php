@@ -14,7 +14,7 @@
 
                 <div class="panel-body">
                     @foreach($categories as $category)
-                        <a href="#" class="btn btn-primary">{{ $category->name }} ({{ $category->posts->count()}})</a> 
+                        <a href="{{ route('categories.show', ['id' => $category->id])}}" class="btn btn-primary">{{ $category->name }} ({{ $category->posts->count()}})</a> 
                     @endforeach
                 </div>
             </div>

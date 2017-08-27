@@ -26,7 +26,9 @@ Route::get('auth/facebook/callback', 'Auth\AuthController@handleFacebookCallback
 Route::get('posts', 'PostController@index')->name('posts.index');
 Route::get('posts/{id}', 'PostController@show')->name('posts.show');
 Route::get('tags', 'TagController@index')->name('tags.index');
+Route::get('tags/{id}', 'TagController@show')->name('tags.show');
 Route::get('categories', 'CategoryController@index')->name('categories.index');
+Route::get('categories/{id}', 'CategoryController@show')->name('categories.show');
 
 // For memeber
 Route::group(['middleware' => ['auth']], function(){

@@ -37,34 +37,6 @@ class TagController extends AppBaseController
         return json_encode($tags);
     }
 
-
-    /**
-     * Show the form for creating a new Tag.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        return view('tags.create');
-    }
-
-    /**
-     * Store a newly created Tag in storage.
-     *
-     * @param CreateTagRequest $request
-     *
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        $input = $request->all();
-
-        $Tag = Tag::create($input);
-
-        return redirect(route('tags.index'))
-            ->with('success' , 'Tag saved successfully.');
-    }
-
     /**
      * Display the specified Tag.
      *
@@ -73,77 +45,8 @@ class TagController extends AppBaseController
      */
     public function show($id)
     {
-        $Tag = Tag::find($id);
-
-        if (empty($Tag)) {
-            Flash::error('Tag not found');
-
-            return redirect(route('tags.index'));
-        }
-
-        return view('tags.show')->with('Tag', $Tag);
-    }
-
-    /**
-     * Show the form for editing the specified Tag.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function edit($id)
-    {
-        $Tag = Tag::find($id);
-
-        if (empty($Tag)) {
-            Flash::error('Tag not found');
-
-            return redirect(route('tags.index'));
-        }
-
-        return view('tags.edit')->with('Tag', $Tag);
-    }
-
-    /**
-     * Update the specified Tag in storage.
-     *
-     * @param  int              $id
-     * @param UpdateTagRequest $request
-     *
-     * @return Response
-     */
-    public function update($id, Request $request)
-    {
-        $Tag = Tag::find($id);
-
-        if (empty($Tag)) {
-            Flash::error('Tag not found');
-
-            return redirect(route('tags.index'));
-        }
-
-        $Tag->update($request->all());
-
-        return redirect(route('tags.index'))->with('success', 'Tag updated successfully.');
-    }
-
-    /**
-     * Remove the specified Tag from storage.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        $Tag = Tag::find($id);
-
-        if (empty($Tag)) {
-            return redirect(route('tags.index'))->with('error', 'Tag not found');
-        }
-
-        $Tag->delete();
-
-        return redirect(route('tags.index'))->with('success', 'Tag deleted successfully.');
+        $tag = Tag::findOrFail($id);
+        $posts = $tag->posts;
+        return view('tags.show')->with('posts', $posts);
     }
 }

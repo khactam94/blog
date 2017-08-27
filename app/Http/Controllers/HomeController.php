@@ -23,9 +23,15 @@ class HomeController extends AppBaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::where('status', 2)->orderBy('id','DESC')->paginate(5);
+        if($request->has('q')){
+            $posts = Post::where('status', 2)->where('title', 'like', '%'.$request->q.'%')->orderBy('id','DESC')->paginate(5);
+        }
+        else {
+            $posts = Post::where('status', 2)->orderBy('id','DESC')->paginate(5);
+        }
+        
         return view('home', compact('posts'));
     }
 

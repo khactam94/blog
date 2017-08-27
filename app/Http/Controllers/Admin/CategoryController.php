@@ -68,7 +68,7 @@ class CategoryController extends AppBaseController
         $category = Category::create($input);
         Flash::success('Category saved successfully.');
 
-        return redirect(route('categories.index'));
+        return redirect(route('admin.categories.index'));
     }
 
     /**
@@ -84,7 +84,7 @@ class CategoryController extends AppBaseController
         if (empty($category)) {
             Flash::error('Category not found');
 
-            return redirect(route('categories.index'));
+            return redirect(route('admin.categories.index'));
         }
 
         return view('admin.categories.show')->with('category', $category);
@@ -104,7 +104,7 @@ class CategoryController extends AppBaseController
         if (empty($category)) {
             Flash::error('Category not found');
 
-            return redirect(route('categories.index'));
+            return redirect(route('admin.categories.index'));
         }
 
         return view('admin.categories.edit')->with('category', $category);
@@ -125,13 +125,13 @@ class CategoryController extends AppBaseController
         if (empty($category)) {
             Flash::error('Category not found');
 
-            return redirect(route('categories.index'));
+            return redirect(route('admin.categories.index'));
         }
 
         $category->update($request->all());
         Flash::success('Category updated successfully.');
 
-        return redirect(route('categories.index'));
+        return redirect(route('admin.categories.index'));
     }
 
     /**
@@ -148,12 +148,12 @@ class CategoryController extends AppBaseController
         if (empty($category)) {
             Flash::error('Category not found');
 
-            return redirect(route('categories.index'));
+            return redirect(route('admin.categories.index'));
         }
 
         $category->delete();
         Flash::success('Category deleted successfully.');
 
-        return redirect(route('categories.index'))->with('success', 'Category deleted successfully.');
+        return redirect(route('admin.categories.index'))->with('success', 'Category deleted successfully.');
     }
 }

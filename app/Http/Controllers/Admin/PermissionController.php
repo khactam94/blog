@@ -57,7 +57,7 @@ class PermissionController extends Controller
         $permission = DB::table('permissions')->where('name', $input['name'])->get()->toArray();
         if(count($permission) > 0) {
             Flash::error('Permission is existed already.');
-            return redirect(route('permissions.create'));
+            return redirect(route('admin.permissions.create'));
         }
 
         DB::table('permissions')->insert([
@@ -65,7 +65,7 @@ class PermissionController extends Controller
         ]);
         Flash::success('Permission saved successfully.');
 
-        return redirect(route('permissions.index'));
+        return redirect(route('admin.permissions.index'));
     }
 
     /**
@@ -81,7 +81,7 @@ class PermissionController extends Controller
         if (empty($permission)) {
             Flash::error('Permission not found');
 
-            return redirect(route('permissions.index'));
+            return redirect(route('admin.permissions.index'));
         }
 
         return view('admin.permissions.show')->with('permission', $permission);
@@ -100,7 +100,7 @@ class PermissionController extends Controller
         if (empty($permission)) {
             Flash::error('Permission not found');
 
-            return redirect(route('permissions.index'));
+            return redirect(route('admin.permissions.index'));
         }
 
         return view('admin.permissions.edit')->with('permission', $permission);
@@ -120,14 +120,14 @@ class PermissionController extends Controller
         if (empty($permission)) {
             Flash::error('Permission not found');
 
-            return redirect(route('permissions.index'));
+            return redirect(route('admin.permissions.index'));
         }
 
         $permission = $this->permissionRepository->update($request->all(), $id);
 
         Flash::success('Permission updated successfully.');
 
-        return redirect(route('permissions.index'));
+        return redirect(route('admin.permissions.index'));
     }
 
     /**

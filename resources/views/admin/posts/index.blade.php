@@ -38,11 +38,11 @@
                                 <td>{{ \Illuminate\Support\Str::words(strip_tags($post->content), 55, '...') }}</td>
                                 <td>{{ $post->user->name }}</td>
                                 <td>{{ config('status')[$post->status] }}</td>
-                                <td>
-                                    <a class="btn btn-info" href="{{ route('admin.posts.show',$post->id) }}">Show</a>
-                                    <a class="btn btn-primary" href="{{ route('admin.posts.edit',$post->id) }}">Edit</a>
+                                <td style="width:10%">
+                                    <a class="btn btn-info btn-xs" href="{{ route('admin.posts.show',$post->id) }}" ><i class="glyphicon glyphicon-eye-open"></i></a>
+                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.posts.edit',$post->id) }}"><i class="glyphicon glyphicon-edit"></i></a>
                                     {!! Form::open(['method' => 'DELETE','route' => ['admin.posts.destroy', $post->id],'style'=>'display:inline']) !!}
-                                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                    {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                                     {!! Form::close() !!}
                                 </td>
                             </tr>

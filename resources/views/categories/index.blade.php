@@ -13,7 +13,9 @@
                 </div>
 
                 <div class="panel-body">
-                    @include('categories.table')
+                    @foreach($categories as $category)
+                        <a href="#" class="btn btn-primary">{{ $category->name }} ({{ $category->posts->count()}})</a> 
+                    @endforeach
                 </div>
             </div>
         </div>

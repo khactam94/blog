@@ -39,8 +39,7 @@ class PostController extends AppBaseController
      */
     public function show($id)
     {
-        if (Auth::guest()) return back();
-        $post = Post::where('user_id', Auth::user()->id)->find($id);
+        $post = Post::findOrFail($id);
         if($post == null) return back();
         return view('posts.show',compact('post'));
     }

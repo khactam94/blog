@@ -10,10 +10,10 @@
             <td>{{ $loop->iteration }}</td>
             <td>{{ $category->name }}</td>
             <td>
-                {{ Form::open(['route' => ['categories.destroy', $category->id], 'method' => 'delete']) }}
+                {{ Form::open(['route' => ['admin.categories.destroy', $category->id], 'method' => 'delete']) }}
                 <div class='btn-group'>
-                    <a href="{{ route('categories.show', [$category->id]) }}" class='btn btn-default'>Show</a>
-                    <a href="{{ route('categories.edit', [$category->id]) }}" class='btn btn-primary'>Edit</a>
+                    <a href="{{ route('admin.categories.show', [$category->id]) }}" class='btn btn-default'>Show</a>
+                    <a href="{{ route('admin.categories.edit', [$category->id]) }}" class='btn btn-primary'>Edit</a>
                     {{ Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger', 'onclick' => "return confirm('Are you sure?')"]) }}
                 </div>
                 {{ Form::close() }}

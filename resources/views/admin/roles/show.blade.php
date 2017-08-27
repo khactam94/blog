@@ -14,7 +14,7 @@
 
                 <div class="panel-body">
                     @include('admin.roles.show_fields')
-                    <a href="{!! route('roles.index') !!}" class="btn btn-default">Back</a>
+                    <a href="{!! route('admin.roles.index') !!}" class="btn btn-default">Back</a>
                 </div>
             </div>
         </div>

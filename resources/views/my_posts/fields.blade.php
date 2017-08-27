@@ -1,6 +1,11 @@
 <div class="form-group col-sm-12">
     {!! Form::label('title', 'Title:') !!}
     {!! Form::text('title', null, ['class' => 'form-control']) !!}
+    @if($errors->has('title'))
+        <p class="alert alert-danger msg">
+            {{ $errors->first('title') }}
+        </p>
+    @endif
 </div>
 <div class="form-group col-sm-12">
     {!! Form::textarea('content', null, ['class' => 'ckeditor', 'id' => 'posteditor']) !!}
@@ -12,6 +17,11 @@
 		};
         CKEDITOR.replace( 'posteditor',config);
     </script>
+    @if($errors->has('content'))
+        <p class="alert alert-danger msg">
+            {{ $errors->first('content') }}
+        </p>
+    @endif
 </div>
 <div class="form-group col-sm-12">
     {!! Form::label('categories', 'Categories:') !!}
@@ -22,4 +32,4 @@
     {!! Form::text('tags', empty($post->tags) ? '': implode(',', $post->tags->pluck('name')->toArray()), ['class' => 'form-control', 'id'=>'tagtoken', 'placeholder'=>'Tags']) !!}
 </div>
 {!! Form::submit('submit', ['class' => 'btn btn-success']); !!}
-<a href="{!! route('posts.index') !!}" class="btn btn-default">Cancel</a>
+<a href="{!! route('my_posts.index') !!}" class="btn btn-default">Cancel</a>

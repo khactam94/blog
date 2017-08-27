@@ -14,7 +14,7 @@
 
                 <div class="panel-body">
                     @include('admin.tags.show_fields')
-                    <a href="{!! route('tags.index') !!}" class="btn btn-default">Back</a>
+                    <a href="{!! route('admin.tags.index') !!}" class="btn btn-default">Back</a>
                 </div>
             </div>
         </div>

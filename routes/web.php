@@ -25,8 +25,8 @@ Route::get('auth/facebook', 'Auth\AuthController@redirectToFacebook');
 
 Route::get('auth/facebook/callback', 'Auth\AuthController@handleFacebookCallback');
 
-Route::get('posts', 'PostController@recentlyPosts')->name('posts.list');
-Route::get('posts/{id}', 'PostController@view')->name('posts.view');
+Route::get('posts', 'PostController@index')->name('posts.index');
+Route::get('posts/{id}', 'PostController@show')->name('posts.show');
 
 Route::get('tags', 'TagController@index')->name('tags.list');
 
@@ -34,13 +34,13 @@ Route::get('categories', 'TagController@index')->name('categories.list');
 
 // For memeber
 Route::group(['middleware' => ['auth']], function(){
-	Route::resource('my-posts', 'PostController');
+	Route::resource('my_posts', 'MyPostController');
 	Route::get('profiles', 'ProfileController@index')->name('profiles.index');
     Route::match(['put', 'patch'], 'profiles/update', 'ProfileController@update')->name('profiles.update');
     Route::get('profiles/edit', 'ProfileController@edit')->name('profiles.edit');
 });
 //For admin
-Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Admin'], function() {
+Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function() {
 	Route::resource('posts', 'PostController', ['middleware' => 'permission:posts-manager']);
 
 	Route::resource('tags', 'TagController', ['middleware' => 'permission:tags-manager']);

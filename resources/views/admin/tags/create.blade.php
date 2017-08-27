@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="panel-body">
-                    {!! Form::open(['route' => 'tags.store']) !!}
+                    {!! Form::open(['route' => 'admin.tags.store']) !!}
 
                         @include('admin.tags.fields')
 

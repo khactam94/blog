@@ -14,7 +14,7 @@
 
                 <div class="panel-body">
                     @include('admin.permissions.show_fields')
-                    <a href="{!! route('permissions.index') !!}" class="btn btn-default">Back</a>
+                    <a href="{!! route('admin.permissions.index') !!}" class="btn btn-default">Back</a>
                 </div>
             </div>
         </div>

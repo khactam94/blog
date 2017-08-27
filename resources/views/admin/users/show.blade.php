@@ -14,7 +14,7 @@
 
                 <div class="panel-body">
                     @include('admin.users.show_fields')
-                    <a href="{!! route('users.index') !!}" class="btn btn-default">Back</a>
+                    <a href="{!! route('admin.users.index') !!}" class="btn btn-default">Back</a>
                 </div>
             </div>
         </div>

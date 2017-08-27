@@ -10,7 +10,7 @@
                             <h2>Permission List</h2>
                         </div>
                         <div class="pull-right" style="margin: 20px">
-                            <a class="btn btn-success" href="{!! route('permissions.create') !!}"> Create Permission</a>
+                            <a class="btn btn-success" href="{!! route('admin.permissions.create') !!}"> Create Permission</a>
                         </div>
                     </div>
                 </div>

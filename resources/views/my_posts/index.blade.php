@@ -39,7 +39,7 @@
                             <tr>
                                 <td>{{ ++$i }}</td>
                                 <td>{{ $post->title }}</td>
-                                <td>{{ $post->content }}</td>
+                                <td>{{ \Illuminate\Support\Str::words(strip_tags($post->content), 115, '...') }}</td>
                                 <td>{{ $post->status }}</td>
                                 <td>
                                     <a class="btn btn-info" href="{{ route('my_posts.show',$post->id) }}">Show</a>

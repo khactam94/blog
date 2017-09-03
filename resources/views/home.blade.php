@@ -38,7 +38,7 @@
                         @endforeach
                         </tbody>
                     </table>
-                    {{ $posts->render() }}
+                    <center>{{ $posts->render() }}</center>
                 </div>
             </div>
 

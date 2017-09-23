@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Tag;
+use App\Models\Category;
 use Illuminate\Support\Facades\Mail;
 
 class HomeController extends AppBaseController
@@ -26,24 +28,23 @@ class HomeController extends AppBaseController
     public function index(Request $request)
     {
         if($request->has('q')){
-            $posts = Post::where('status', 2)->where('title', 'like', '%'.$request->q.'%')->orderBy('id','DESC')->paginate(5);
+            if(config('database.default') ==='pgsql'){
+                $posts = Post::where('status', 2)->where('title', 'ilike', '%'.$request->q.'%')->orderBy('id','DESC')->paginate(25);
+            }
+            elseif(config('database.default') ==='mysql'){
+                $posts = Post::where('status', 2)->where('UPPER(title)', 'ilike', '%'.strtoupper($request->q).'%')
+                        ->orderBy('id','DESC')->paginate(25);
+            }
+            else{
+                $posts = Post::where('status', 2)->where('title', 'ilike', '%'.$request->q.'%')
+                        ->orderBy('id','DESC')->paginate(25);
+            }
         }
         else {
-            $posts = Post::where('status', 2)->orderBy('id','DESC')->paginate(5);
+            $posts = Post::where('status', 2)->orderBy('id','DESC')->paginate(25);
         }
-        
-        return view('home', compact('posts'));
-    }
-
-    public function mail()
-    {
-        $user = User::find(1)->toArray();
-
-        Mail::send('khac.tam.94@gmail.com', $user, function($message) use ($user) {
-            $message->to('nguyentom071194@gmail.com');
-            $message->subject('E-Mail Example');
-        });
-
-        dd('Mail Send Successfully');
+        $tags = Tag::paginate(25);
+        $categories = Category::paginate(25);
+        return view('home', compact('posts', 'tags', 'categories'));
     }
 }

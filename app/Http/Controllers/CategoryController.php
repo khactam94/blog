@@ -32,8 +32,15 @@ class CategoryController extends AppBaseController
 
     public function search(Request $request)
     {
-        $categories = Category::where('name', 'like', '%'.$request->input('query').'%')->paginate(10)->pluck('name');
-
+        if(config('database.default') =='pgsql'){
+            $categories = Category::where('name', 'ilike', '%'.$request->input('query').'%')->paginate(10)->pluck('name');
+        }
+        elseif(config('database.default') =='mysql'){
+            $categories = Category::where('UPPER(name)', 'like', '%'.strtoupper($request->input('query')).'%')->paginate(10)->pluck('name');
+        }
+        else{
+            $categories = Category::where('name', 'like', '%'.$request->input('query').'%')->paginate(10)->pluck('name');
+        }
         return json_encode($categories);
     }
 

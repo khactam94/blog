@@ -44,7 +44,9 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">Categories</div>
-
+                    @foreach($categories as $category)
+                        <a href="{{ route('categories.show', ['id' => $category->id])}}" class="btn btn-primary">{{ $category->name }} ({{ $category->posts->count()}})</a> 
+                    @endforeach
                 <div class="panel-body">
                     
                 </div>
@@ -52,7 +54,9 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">Tags</div>
-
+                    @foreach($tags as $tag)
+                        <a href="{{ route('tags.show', ['id' => $tag->id])}}" class="btn btn-primary">{{ $tag->name }} ({{ $tag->posts->count()}})</a> 
+                    @endforeach
                 <div class="panel-body">
                     
                 </div>

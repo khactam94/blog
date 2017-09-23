@@ -52,7 +52,7 @@
                         @endforeach
                     </table>
 
-                    {!! $posts->render() !!}
+                    {!! $posts->appends(Request::only('q'))->render() !!}
                 </div>
             </div>
         </div>

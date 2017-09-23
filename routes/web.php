@@ -49,7 +49,9 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Adm
 
     Route::resource('roles', 'RoleController', ['middleware' => 'permission:roles-manager']);
 
-    Route::resource('permissions', 'PermissionController', ['middleware' => 'permission:permissions-manager']);
+	Route::resource('permissions', 'PermissionController', ['middleware' => 'permission:permissions-manager']);
+	
+	Route::get('/download', 'BackupController@download');
 });
 
 //For test

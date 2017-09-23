@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Elasticquent\ElasticquentTrait;
 
 use App\Models\User;
 use App\Models\Tag;
 use App\Models\Category;
 class Post extends Model
 {
+    use ElasticquentTrait;
+    
     public $fillable = [
         'title',
         'content',

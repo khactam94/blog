@@ -22,4 +22,4 @@
     @endforeach
     </tbody>
 </table>
-<center>{{ $categories->links()}}</center>
+<center>{{ $categories->appends(Request::only('q'))->links()}}</center>

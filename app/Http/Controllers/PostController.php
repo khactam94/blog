@@ -22,13 +22,22 @@ class PostController extends AppBaseController
     public function index(Request $request)
     {
         if($request->has('q')){
-            $posts = Post::where('status', 2)->where('title', 'like', '%'.$request->q.'%')->orderBy('id','DESC')->paginate(5);
+            if(config('database.default') ==='pgsql'){
+                $posts = Post::where('status', 2)->where('title', 'ilike', '%'.$request->q.'%')->orderBy('id','DESC')->paginate(25);
+            }
+            elseif(config('database.default') ==='mysql'){
+                $posts = Post::where('status', 2)->where('UPPER(title)', 'ilike', '%'.strtoupper($request->q).'%')
+                        ->orderBy('id','DESC')->paginate(25);
+            }
+            else{
+                $posts = Post::where('status', 2)->where('title', 'ilike', '%'.$request->q.'%')
+                        ->orderBy('id','DESC')->paginate(25);
+            }
         }
         else {
-            $posts = Post::where('status', 2)->orderBy('id','DESC')->paginate(5);
+            $posts = Post::where('status', 2)->orderBy('id','DESC')->paginate(25);
         }
-        return view('posts.index',compact('posts'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        return view('posts.index',compact('posts'));
     }
 
     /**
@@ -41,6 +50,7 @@ class PostController extends AppBaseController
     {
         $post = Post::findOrFail($id);
         if($post == null) return back();
+        Event::fire('posts.view', $post);
         return view('posts.show',compact('post'));
     }
 }

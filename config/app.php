@@ -184,6 +184,7 @@ return [
         \InfyOm\AdminLTETemplates\AdminLTETemplatesServiceProvider::class, 
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
+        Elasticquent\ElasticquentServiceProvider::class,
 
     ],
 
@@ -239,6 +240,7 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Es' => Elasticquent\ElasticquentElasticsearchFacade::class,
         
     ],
 

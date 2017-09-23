@@ -23,9 +23,9 @@ class PostController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $posts = Post::orderBy('id','DESC')->paginate(5);
+        $posts = Post::orderBy('id','DESC')->paginate(25);
         return view('admin.posts.index',compact('posts'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+            ->with('i', ($request->input('page', 1) - 1) * 25);
     }
 
     /**

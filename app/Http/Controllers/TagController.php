@@ -24,16 +24,22 @@ class TagController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $tags = Tag::orderBy('id','DESC')->paginate(10);
-
+        $tags = Tag::paginate(100);
         return view('tags.index')
             ->with('tags', $tags);
     }
 
     public function search(Request $request)
     {
-        $tags = Tag::where('name', 'like', '%'.$request->input('query').'%')->paginate(10)->pluck('name');
-
+        if(config('database.default') =='pgsql'){
+            $tags = Tag::where('name', 'ilike', '%'.$request->input('query').'%')->paginate(10)->pluck('name');
+        }
+        elseif(config('database.default') =='mysql'){
+            $tags = Tag::where('UPPER(name)', 'like', '%'.strtoupper($request->input('query')).'%')->paginate(10)->pluck('name');
+        }
+        else{
+            $tags = Tag::where('name', 'like', '%'.$request->input('query').'%')->paginate(10)->pluck('name');
+        }
         return json_encode($tags);
     }
 

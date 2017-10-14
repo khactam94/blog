@@ -1,5 +1,9 @@
 @extends('admin.layouts.app')
 
+@section('css')
+    @include('layouts.datatables_css')
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row">
@@ -22,36 +26,43 @@
                         </div>
                     @endif
 
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>No</th>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Author</th>
-                            <th>Status</th>
-                            <th width="280px">Action</th>
-                        </tr>
-                        @foreach ($posts as $key => $post)
+                    <table class="table table-bordered datatable" style="width: 100%">
+                        <thead>
                             <tr>
-                                <td>{{ ++$i }}</td>
-                                <td>{{ $post->title }}</td>
-                                <td>{{ \Illuminate\Support\Str::words(strip_tags($post->content), 55, '...') }}</td>
-                                <td>{{ $post->user->name }}</td>
-                                <td>{{ config('status')[$post->status] }}</td>
-                                <td style="width:10%">
-                                    <a class="btn btn-info btn-xs" href="{{ route('admin.posts.show',$post->id) }}" ><i class="glyphicon glyphicon-eye-open"></i></a>
-                                    <a class="btn btn-primary btn-xs" href="{{ route('admin.posts.edit',$post->id) }}"><i class="glyphicon glyphicon-edit"></i></a>
-                                    {!! Form::open(['method' => 'DELETE','route' => ['admin.posts.destroy', $post->id],'style'=>'display:inline']) !!}
-                                    {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
-                                    {!! Form::close() !!}
-                                </td>
+                                <th style="width: 5%">Id</th>
+                                <th style="width: 30%">Title</th>
+                                <th style="width: 40%">Content</th>
+                                <th style="width: 10%">Author</th>
+                                <th style="width: 5%">Status</th>
+                                <th style="width: 10%">Action</th>
                             </tr>
-                        @endforeach
+                        </thead>
+
                     </table>
 
-                    {!! $posts->appends(Request::only('q'))->render() !!}
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    @include('layouts.datatables_js')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('admin.posts.list') }}',
+                columns: [
+                    {data: 'id', name: 'id'},
+                    {data: 'title', name: 'title'},
+                    {data: 'content', name: 'content'},
+                    {data: 'user_id', name: 'user_id'},
+                    {data: 'status', name: 'status'},
+                    {data: 'action', name: 'action', searchable: "false", orderable: "false"},
+                ],
+            });
+        });
+    </script>
 @endsection

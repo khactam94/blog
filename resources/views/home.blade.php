@@ -38,7 +38,7 @@
                         @endforeach
                         </tbody>
                     </table>
-                    <center>{{ $posts->render() }}</center>
+                    <div class="text-center">{{ $posts->appends(Request::only('q'))->render() }}</div>
                 </div>
             </div>
 

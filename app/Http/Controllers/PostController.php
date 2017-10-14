@@ -37,6 +37,7 @@ class PostController extends AppBaseController
         else {
             $posts = Post::where('status', 2)->orderBy('id','DESC')->paginate(25);
         }
+        ini_set('max_execution_time', 300);
         return view('posts.index',compact('posts'));
     }
 

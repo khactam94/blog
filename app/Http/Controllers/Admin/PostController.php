@@ -21,13 +21,43 @@ class PostController extends AppBaseController
      *
      * @return \Illuminate\Http\Response
      */
+//    public function index(Request $request)
+//    {
+//        $posts = Post::orderBy('id','DESC')->paginate(25);
+//        return view('admin.posts.index',compact('posts'))
+//            ->with('i', ($request->input('page', 1) - 1) * 25);
+//    }
     public function index(Request $request)
     {
-        $posts = Post::orderBy('id','DESC')->paginate(25);
-        return view('admin.posts.index',compact('posts'))
-            ->with('i', ($request->input('page', 1) - 1) * 25);
+        return view('admin.posts.index');
     }
-
+    private function getActionButton($id){
+        return '<form method="POST" action="'.route('admin.posts.destroy', $id).'" accept-charset="UTF-8">'
+            .'<input name="_method" type="hidden" value="DELETE">'
+            .csrf_field()
+            .'<div class="btn-group">'
+            .'<a href="'.route("admin.posts.show", $id).'" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a> '
+            .'<a href="'.route('admin.posts.edit', $id).'" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a>'
+            .'<button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(\'Are you sure?\')"><i class="glyphicon glyphicon-trash"></i></button>'
+            .'</div>'
+            .'</form>';
+    }
+    public function datatable(){
+        return \DataTables::of(Post::query()->select('id', 'title', 'content', 'user_id', 'status'))
+            ->editColumn('content', function(Post $post) {
+                return \Illuminate\Support\Str::words(strip_tags($post->content), 115, '...');
+            })
+            ->editColumn('user_id', function(Post $post) {
+                return $post->user->name;
+            })
+            ->editColumn('status', function(Post $post) {
+                return config('status.'.$post->status);
+            })
+            ->addColumn('action', function ($post) {
+                return $this->getActionButton($post->id);
+            })
+            ->rawColumns(['action'])->make(true);
+    }
     /**
      * Show the form for creating a new resource.
      *

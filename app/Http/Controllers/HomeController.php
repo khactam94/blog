@@ -41,10 +41,11 @@ class HomeController extends AppBaseController
             }
         }
         else {
-            $posts = Post::where('status', 2)->orderBy('id','DESC')->paginate(25);
+            $posts = Post::where('status', 2)->orderBy('id','DESC')->paginate(5);
         }
-        $tags = Tag::paginate(25);
-        $categories = Category::paginate(25);
+        ini_set('max_execution_time', 300);
+        $tags = Tag::take(25)->get();
+        $categories = Category::take(25)->get();
         return view('home', compact('posts', 'tags', 'categories'));
     }
 }

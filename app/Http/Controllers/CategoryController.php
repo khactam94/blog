@@ -9,6 +9,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use App\Models\Category;
 use Response;
 use Flash;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends AppBaseController
 {
@@ -36,7 +37,7 @@ class CategoryController extends AppBaseController
             $categories = Category::where('name', 'ilike', '%'.$request->input('query').'%')->paginate(10)->pluck('name');
         }
         elseif(config('database.default') =='mysql'){
-            $categories = Category::where('UPPER(name)', 'like', '%'.strtoupper($request->input('query')).'%')->paginate(10)->pluck('name');
+            $categories = Category::where(DB::raw('upper(name)'), 'like', '%'.strtoupper($request->input('query')).'%')->limit(10)->pluck('name');
         }
         else{
             $categories = Category::where('name', 'like', '%'.$request->input('query').'%')->paginate(10)->pluck('name');

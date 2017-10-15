@@ -1,13 +1,15 @@
 <table class="table table-responsive" id="tags-table">
     <thead>
+        <th>No</th>
         <th>Name</th>
         <th colspan="3">Action</th>
     </thead>
     <tbody>
     @foreach($tags as $tag)
         <tr>
-            <td>{!! $tag->name !!}</td>
-            <td>
+            <td width="10%">{!! $loop->iteration !!}</td>
+            <td>{{ $tag->name }}</td>
+            <td width="20%">
                 {!! Form::open(['route' => ['admin.tags.destroy', $tag->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
                     <a href="{!! route('admin.tags.show', [$tag->id]) !!}" class='btn btn-default'>Show</a>

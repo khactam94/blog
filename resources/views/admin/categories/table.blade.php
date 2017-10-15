@@ -6,20 +6,29 @@
     </thead>
     <tbody>
     @foreach($categories as $category)
-        <tr>
-            <td>{{ $loop->iteration }}</td>
+        <tr id = "cate_{{  $category->id }}">
+            <td style="width: 10%">{{ $loop->iteration }}</td>
             <td>{{ $category->name }}</td>
-            <td>
-                {{ Form::open(['route' => ['admin.categories.destroy', $category->id], 'method' => 'delete']) }}
+            <td style="width: 20%">
                 <div class='btn-group'>
                     <a href="{{ route('admin.categories.show', [$category->id]) }}" class='btn btn-default'>Show</a>
                     <a href="{{ route('admin.categories.edit', [$category->id]) }}" class='btn btn-primary'>Edit</a>
-                    {{ Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger', 'onclick' => "return confirm('Are you sure?')"]) }}
+                    <a href="{{ route('api.categories.destroy', $category->id) }}" class="btn btn-danger"
+                       data-tr="tr_{{$category->id}}"
+                       data-toggle="confirmation"
+                       data-btn-ok-label="Delete" data-btn-ok-icon="fa fa-remove"
+                       data-btn-ok-class="btn btn-sm btn-danger"
+                       data-btn-cancel-label="Cancel"
+                       data-btn-cancel-icon="fa fa-chevron-circle-left"
+                       data-btn-cancel-class="btn btn-sm btn-default"
+                       data-title="Are you sure you want to delete ?"
+                       data-placement="left" data-singleton="true">
+                        Delete
+                    </a>
                 </div>
-                {{ Form::close() }}
             </td>
         </tr>
     @endforeach
     </tbody>
 </table>
-<center>{{ $categories->appends(Request::only('q'))->links()}}</center>
+<div class="text-center">{{ $categories->appends(Request::only('q'))->links()}}</div>

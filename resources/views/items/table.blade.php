@@ -16,8 +16,6 @@
 
 @section('scripts')
     @include('layouts.datatables_js')
-
-
     <script type="text/javascript">
         $(document).ready(function() {
             $('.datatable').DataTable({

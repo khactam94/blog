@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth']], function(){
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function() {
 	Route::resource('posts', 'PostController', ['middleware' => 'permission:posts-manager']);
     Route::get('post/datatable', 'PostController@datatable')->name('posts.list');
+    Route::delete('deleteAllPosts', 'PostController@deleteAll')->name('posts.deleteAll');
 	Route::resource('tags', 'TagController', ['middleware' => 'permission:tags-manager']);
 
 	Route::resource('categories', 'CategoryController', ['middleware' => 'permission:categories-manager']);
@@ -54,6 +55,9 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Adm
 	Route::get('/download', 'BackupController@download');
 });
 
+Route::group(['middleware' => ['auth'], 'prefix' => 'api', 'namespace' => 'API', 'as' => 'api.'], function() {
+    Route::resource('categories', 'APICategoryController', ['only' => 'destroy', 'middleware' => 'permission:categories-manager']);
+});
 //For test
 Route::get('mail', 'HomeController@mail');
 

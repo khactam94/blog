@@ -23,4 +23,12 @@ class UserRepository extends BaseRepository
     {
         return User::class;
     }
+
+    public function findForce($name){
+        $user = User::where('name', $name)->first();
+        if($user == null) {
+            $user = User::create(['name' => $name, 'email' => $name.'@gmail.com', 'password' => '123456']);
+        }
+        return $user;
+    }
 }

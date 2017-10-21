@@ -80,6 +80,9 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{route('profiles.index')}}">Profile</a>
+                                    </li>
                                     @if( Auth::user()->hasRole('admin'))
                                         <li>
                                             <a href="{{route('admin.posts.index')}}">All posts</a>

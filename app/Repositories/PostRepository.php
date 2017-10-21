@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
+use Illuminate\Support\Facades\DB;
 use InfyOm\Generator\Common\BaseRepository;
 
 class PostRepository extends BaseRepository
@@ -16,7 +17,6 @@ class PostRepository extends BaseRepository
         'title',
         'content'
     ];
-
     /**
      * Configure the Model
      **/
@@ -28,30 +28,54 @@ class PostRepository extends BaseRepository
     public function getListPosts($perPage){
         Post::orderBy('id','DESC')->paginate($perPage);
     }
-
-    public function saveCategories($post, $categoriesInput){
-        if($categoriesInput){
-            $categories = explode(',', $categoriesInput);
-            $category_ids =[];
-            foreach ($categories as $key => $value) {
-                $category = Category::where('name', trim($value))->first();
-                $category ? $category_ids[$key] = $category->id : null;
-            }
-            $post->categories()->sync($category_ids);
-        }
-
+    //My post controller
+    public function searchPostsByAuthor($id, $key, $perPage){
+        return Post::where('user_id', '=', $id)->search($key)
+            ->with('categories')->with('tags')->orderBy('id','DESC')->paginate($perPage);
     }
-    public function saveTags($post, $tagsInput){
-        if($tagsInput){
-            $tags = explode(',', $tagsInput);
-            $tag_ids = [];
-            foreach ($tags as $key => $value) {
-                $tag = Tag::where('name', $value)->first();
-                $tag ? $tag_ids[$key] = $tag->id : null;
-            }
-            $post->tags()->sync($tag_ids);
-        }
+
+    public function getPostsByAuthor($id, $perPage){
+        return Post::where('user_id', '=', $id)->orderBy('id','DESC')->paginate($perPage);
     }
+    public function getPostByAuthor($id, $userId){
+        $post = Post::find($id);
+        return $post->user_id == $userId ? $post : null;
+    }
+    //Home controller
+    public function findPublicPost($id){
+        $post = Post::find($id);
+        return $post->status == Post::PUBLIC_STATUS ? $post : null;
+    }
+
+    public function searchPublicPost($key, $perPage){
+        if($key){
+            $posts = Post::where('status', '=', Post::PUBLIC_STATUS)->search($key)
+                ->with('categories')->with('tags')->orderBy('id','DESC')->paginate($perPage);
+        }
+        else{
+            $posts = Post::where('status', '=', Post::PUBLIC_STATUS)
+                ->orderBy('id','DESC')->paginate($perPage);
+        }
+        return $posts;
+    }
+    //Import / Export data
+    public function getPostsArray(){
+        $fields = [
+            'posts.title' => 'Title',
+            'posts.content' => 'Content',
+            'users.name' => 'Author',
+            'status' => 'Status',
+            'view' => 'View',
+            'categories.name' => 'Category',
+            'tags.name' => 'Tag',
+            ];
+        //DB::enableQueryLog();
+        $posts = Post::export($fields)->get()->toArray();
+        //dd(DB::getQueryLog());
+        //dd($posts);
+        return $posts;
+    }
+    //For datatables
     private function getActionButton($id){
         return '<form method="POST" action="'.route('admin.posts.destroy', $id).'" accept-charset="UTF-8">'
             .'<input name="_method" type="hidden" value="DELETE">'
@@ -94,5 +118,28 @@ class PostRepository extends BaseRepository
                 return $post->id;
             })
             ->make(true);
+    }
+    //Post model
+    public function saveCategories($post, $categoriesInput){
+        if($categoriesInput){
+            $categories = explode(',', $categoriesInput);
+            $category_ids =[];
+            foreach ($categories as $key => $value) {
+                $category = Category::where('name', trim($value))->first();
+                $category ? $category_ids[$key] = $category->id : null;
+            }
+            $post->categories()->sync($category_ids);
+        }
+    }
+    public function saveTags($post, $tagsInput){
+        if($tagsInput){
+            $tags = explode(',', $tagsInput);
+            $tag_ids = [];
+            foreach ($tags as $key => $value) {
+                $tag = Tag::where('name', $value)->first();
+                $tag ? $tag_ids[$key] = $tag->id : null;
+            }
+            $post->tags()->sync($tag_ids);
+        }
     }
 }

@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
 
 @section('css')
-    @include('layouts.datatables_css')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.5/bootstrap-confirmation.min.js"></script>
+    <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="{{ asset('vendor/bootstrap-confirmation/bootstrap-confirmation.min.js') }}"></script>
 @endsection
 
 @section('content')
@@ -41,7 +41,35 @@
                         </thead>
 
                     </table>
-                    <button class="btn btn-danger delete_all">Delete All Selected Records</button>
+                    <div class="row" style="margin: 10px 0px">
+                        <div class="btn-group text-left">
+                            <a href="{{ route('admin.posts.export') }}" class="btn btn-info">Export</a>
+                            <button class="btn btn-info"  data-toggle="collapse" data-target="#importPost">Import</button>
+                        </div>
+                        <div class="btn-group" style="float: right;">
+                            <button class="btn btn-danger delete_all">Delete All Selected Records</button>
+                        </div>
+                    </div>
+                    <div class="row collapse" style="margin: 10px 0px" id="importPost">
+                        <div class="col-md-3">
+                            <form role="form" action="{{ route('admin.posts.import') }}" method="POST" enctype="multipart/form-data">
+                                {{ csrf_field() }}
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">File input</label>
+                                        <input type="file" id="excelFile" name="excelFile">
+
+                                        <p class="help-block">Example block-level help text here.</p>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                                <div class="box-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -49,7 +77,7 @@
 @endsection
 
 @section('scripts')
-    @include('layouts.datatables_js')
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             var selected = [];
@@ -131,35 +159,7 @@
 
             $('[data-toggle=confirmation]').confirmation({
                 rootSelector: '[data-toggle=confirmation]',
-                onConfirm: function (event, element) {
-                    element.trigger('confirm');
-                }
-            });
-
-            $(document).on('confirm', function (e) {
-                var ele = e.target;
-                e.preventDefault();
-
-                $.ajax({
-                    url: ele.href,
-                    type: 'DELETE',
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success: function (data) {
-                        if (data['success']) {
-                            $("#" + data['tr']).slideUp("slow");
-                            alert(data['success']);
-                        } else if (data['error']) {
-                            alert(data['error']);
-                        } else {
-                            alert('Whoops Something went wrong!!');
-                        }
-                    },
-                    error: function (data) {
-                        alert(data.responseText);
-                    }
-                });
-
-                return false;
+                // other options
             });
         });
     </script>

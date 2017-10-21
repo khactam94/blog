@@ -53,6 +53,9 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Adm
 	Route::resource('permissions', 'PermissionController', ['middleware' => 'permission:permissions-manager']);
 	
 	Route::get('/download', 'BackupController@download');
+	Route::get('post/export', 'PostController@export')->name('posts.export');
+	Route::post('post/import', 'PostController@import')->name('posts.import');
+
 });
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'api', 'namespace' => 'API', 'as' => 'api.'], function() {

@@ -68,9 +68,9 @@ class PostRepository extends BaseRepository
             'categories.name' => 'Category',
             'tags.name' => 'Tag',
             ];
-        //DB::enableQueryLog();
+        DB::enableQueryLog();
         $posts = Post::export($fields)->get()->toArray();
-        //dd(DB::getQueryLog());
+        dd(DB::getQueryLog());
         //dd($posts);
         return $posts;
     }

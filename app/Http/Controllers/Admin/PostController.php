@@ -161,6 +161,7 @@ class PostController extends AppBaseController
     public function export(Request $request)
     {
         $posts = $this->postRepository->getPostsArray();
+        dd($posts);
         return Excel::create('post_list_'.Carbon::now()->format('dmY'), function($excel) use ($posts) {
             $excel->sheet('Posts', function($sheet) use ($posts)
             {
@@ -181,19 +182,12 @@ class PostController extends AppBaseController
                 $path = $request->file('excelFile')->getRealPath();
                 $data = Excel::load($path, function ($reader) {
                 })->get();
-                //dd($data);
+                $insert =[];
                 if (!empty($data) && $data->count()) {
                     $date = \Carbon\Carbon::today()->format('Y-m-d');
                     foreach ($data->toArray() as $key => $value) {
                         if (!empty($value)) {
-                            //Check title
-                            $status = true;
-                            if(!isset($value['title'])) continue;
-                            $title = $value['title'];
-                            $post = $this->postRepository->findByField('title', $title)->first();
-                            if( $post != null) continue;
                             $post = [];
-                            //Get content
                             $post['title'] = $value['title'];
                             $post['content'] = $value['content'];
                             $post['status'] = $value['status'];
@@ -206,24 +200,22 @@ class PostController extends AppBaseController
                             };
                             $post['tags'] = [];
                             foreach (explode( ',', $value['tag']) as $tag){
-                                array_push($post['tags'], $this->categoryRepository->findForce($tag)->id);
+                                array_push($post['tags'], $this->tagRepository->findForce($tag)->id);
                             };
                             $insert[] = $post;
                         }
                     }
-                    if (!empty($insert)) {
-                        $posts = array();
-                        foreach ($insert as $input) {
-                            $post = Post::create($input);
-                            //$post->tags()->sync($input['tags']);
-                            //$post->categories()->sync($input['categories']);
-                        }
-                        return back()->with('success', 'Thêm thành công ' . count($insert) . ' cuốn sách.');
-                    }else{
-                        return back()->with('error','Dữ liệu không đúng!.');
+                    //dd($insert);
+                    foreach ($insert as $input) {
+                        $post = $this->postRepository->findByField('title', $input['title'])->first();
+                        $post ? $post->update($input) : $post = Post::create($input);
+                        $post->tags()->sync($input['tags']);
+                        $post->categories()->sync($input['categories']);
                     }
+                    return back()->with('success', 'Import succesfully');
                 }
             }catch(\Exception $e){
+                dd('loi');
                 return back()->with('error','File sai định dạng.');
             }
         }

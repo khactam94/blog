@@ -68,9 +68,9 @@ class PostRepository extends BaseRepository
             'categories.name' => 'Category',
             'tags.name' => 'Tag',
             ];
-        DB::enableQueryLog();
+        //DB::enableQueryLog();
         $posts = Post::export($fields)->get()->toArray();
-        dd(DB::getQueryLog());
+        //dd(DB::getQueryLog());
         //dd($posts);
         return $posts;
     }
@@ -82,7 +82,7 @@ class PostRepository extends BaseRepository
             .'<div class="btn-group">'
             .'<a href="'.route("admin.posts.show", $id).'" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a> '
             .'<a href="'.route('admin.posts.edit', $id).'" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a>'
-            .'<button type="submit" class="btn btn-danger btn-xs"
+            .'<button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(\'Are you sure?\')"
                            data-tr="tr_'.$id.'"
                            data-toggle="confirmation"
                            data-btn-ok-label="Delete" data-btn-ok-icon="fa fa-remove"

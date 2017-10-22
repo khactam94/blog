@@ -35,5 +35,5 @@
     {!! Form::label('status', 'Status:') !!}
     {!! Form::select('status', ['0' => 'unapproved', '1' => 'private', '2' => 'public'], null, ['class' => 'form-control']) !!}
 </div>
-{!! Form::submit('submit', ['class' => 'btn btn-success']); !!}
+{!! Form::submit('submit', ['class' => 'btn btn-success']) !!}
 <a href="{!! route('admin.posts.index') !!}" class="btn btn-default">Cancel</a>

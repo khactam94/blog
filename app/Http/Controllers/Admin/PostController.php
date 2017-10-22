@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\StorePostRequest;
 use App\Http\Requests\Admin\UpdatePostRequest;
+use App\Http\Requests\Admin\UploadExcelRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Http\Controllers\AppBaseController;
@@ -158,23 +159,23 @@ class PostController extends AppBaseController
      *
      * @var array
      */
-    public function export(Request $request)
+    public function export(Request $request, $type)
     {
+        $type = $type ?:'xlsx';
         $posts = $this->postRepository->getPostsArray();
-        dd($posts);
         return Excel::create('post_list_'.Carbon::now()->format('dmY'), function($excel) use ($posts) {
             $excel->sheet('Posts', function($sheet) use ($posts)
             {
                 $sheet->fromArray($posts, null, 'A1', true);
             });
-        })->download('xlsx');
+        })->download($type);
     }
     /**
      * Import file into database Code
      *
      * @var array
      */
-    public function import(Request $request)
+    public function import(UploadExcelRequest $request)
     {
         //dd($request);
         if($request->hasFile('excelFile')){
@@ -216,9 +217,9 @@ class PostController extends AppBaseController
                 }
             }catch(\Exception $e){
                 dd('loi');
-                return back()->with('error','File sai định dạng.');
+                return back()->with('error','File is incorrect!');
             }
         }
-        return back()->with('error','Không tìm thấy file');
+        return back()->with('error','File not found');
     }
 }

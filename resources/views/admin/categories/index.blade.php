@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('toastr/toastr.min.css') }}">
-    <script src="{{ asset('toastr/toastr.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/toastr/toastr.min.css') }}">
+    <script src="{{ asset('vendor/toastr/toastr.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.5/bootstrap-confirmation.min.js"></script>
 @endsection
 

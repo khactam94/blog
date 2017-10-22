@@ -3,7 +3,6 @@
 @section('css')
     <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://adminlte.io/themes/AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-
     <script src="{{ asset('vendor/bootstrap-confirmation/bootstrap-confirmation.min.js') }}"></script>
 @endsection
 
@@ -28,7 +27,11 @@
                             <p>{{ $message }}</p>
                         </div>
                     @endif
-
+                    @if ($message = Session::get('error'))
+                        <div class="alert alert-danger">
+                            <p>{{ $message }}</p>
+                        </div>
+                    @endif
                     <table class="table table-bordered datatable" style="width: 100%">
                         <thead>
                             <tr>
@@ -45,7 +48,15 @@
                     </table>
                     <div class="row" style="margin: 10px 0px">
                         <div class="btn-group text-left">
-                            <a href="{{ route('admin.posts.export') }}" class="btn btn-info">Export</a>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                    Export <span class="caret"></span></button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{ route('admin.posts.export', 'xlsx') }}">Excel</a></li>
+                                    <li><a href="{{ route('admin.posts.export', 'csv') }}">CSV</a></li>
+                                    <li><a href="{{ route('admin.posts.export', 'pdf') }}">PDF</a></li>
+                                </ul>
+                            </div>
                             <button class="btn btn-info"  data-toggle="collapse" data-target="#importPost">Import</button>
                         </div>
                         <div class="btn-group" style="float: right;">
@@ -79,7 +90,6 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -163,6 +173,9 @@
             $('[data-toggle=confirmation]').confirmation({
                 rootSelector: '[data-toggle=confirmation]',
                 // other options
+            });
+            $('body').on('confirmed.bs.confirmation', '.delete-record', function() {
+                deleteForm($(this).attr('data-delid'));
             });
         });
     </script>

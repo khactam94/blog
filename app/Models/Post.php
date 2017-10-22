@@ -62,7 +62,7 @@ class Post extends Model
      * Validation rules
      *
      * @var array
-     */
+     *
     public static $rules = [
         'title' => 'required',
         'content' => 'required',
@@ -70,7 +70,16 @@ class Post extends Model
         'status' => 'required',
         'tags' => 'required'
     ];
-
+    /**
+     * Scope a query to only include public posts.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePublic($query)
+    {
+        return $query->where('status', self::PUBLIC_STATUS);
+    }
     /**
      * Set view
      * @param $input

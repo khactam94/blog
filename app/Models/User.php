@@ -12,6 +12,10 @@ class User extends Authenticatable
     use Notifiable;
     use EntrustUserTrait;
 
+    const ACTIVE_STATUS = 1;
+    const UNACTIVE_STATUS = 0;
+    const BLOCK_STATUS = 2;
+
     protected $table = "users";
     /**
      * The attributes that are mass assignable.
@@ -19,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar', 'full_name', 'phone_number', 'birthday', 'address'
+        'name', 'email', 'password', 'avatar', 'full_name', 'phone_number', 'birthday', 'address', 'active'
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -46,6 +50,22 @@ class User extends Authenticatable
     public function getAvatarAttribute()
     {
         return $this->attributes['avatar'] != null ? $this->attributes['avatar'] : 'default.png';
+    }
+    public function getActiveAttribute()
+    {
+        $status = ['unactive', 'active', 'block'];
+        return $status[$this->attributes['active']];
+    }
+
+    /**
+     * Scope a query to only include active users.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('active', self::ACTIVE_STATUS);
     }
 
     public function addNew($input)

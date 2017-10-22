@@ -3,8 +3,7 @@
 @section('content')
 <div class="container" style="width: 90%">
     <div class="row" style="padding-left: 50px">
-        <div class="col-md-9">
-
+        <div class="col-md-9" style="padding: 0">
             <div class="panel panel-default">
                 <div class="panel-heading"><h1>Recently Post</h1></div>
                 <div class="panel-body" style="padding: 0">
@@ -14,7 +13,7 @@
                         </tbody>
                     </table>
                     <div class="ajax-load text-center" style="display:none">
-                        <p><img src="http://demo.itsolutionstuff.com/plugin/loader.gif">Loading More post</p>
+                        <p><img src="{{ asset('images/loader.gif') }}">Loading More post</p>
                     </div>
                 </div>
             </div>
@@ -44,23 +43,32 @@
 
 @section('scripts')
     <script type="text/javascript">
-        var page = 1;
+        var page = 2;
+        var isLoad = [];
         const max_page = {{$posts->lastPage()}};
         $(window).scroll(function() {
             if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-                if (page <max_page)
+                if (!isLoad[page] && page <= max_page)
                 {
-                    page++;
                     loadMoreData(page);
+                    page++;
+                }
+                else{
+                    $('.ajax-load').show();
+                    $('.ajax-load').html("No more records found");
                 }
             }
         });
 
         function loadMoreData(page){
+            var url = new URL(window.location.href);
+            var q = url.searchParams.get("q");
+            console.log(q);
             $.ajax(
                 {
-                    url: '?page=' + page,
+                    url: '?'+ (q ? 'q=' + q + '&' : '' ) + 'page=' + page,
                     type: "get",
+                    async: false,
                     beforeSend: function()
                     {
                         $('.ajax-load').show();
@@ -70,16 +78,17 @@
                 {
                     if(data.html == " "){
                         $('.ajax-load').html("No more records found");
-                        return;
+                        return false;
                     }
                     $('.ajax-load').hide();
-                    console.log(data.html);
                     $("#post-data").append(data.html);
+                    isLoad[page] = true;
                 })
                 .fail(function(jqXHR, ajaxOptions, thrownError)
                 {
                     alert('server not responding...');
                 });
+            return false;
         }
     </script>
 

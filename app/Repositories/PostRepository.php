@@ -43,18 +43,17 @@ class PostRepository extends BaseRepository
     }
     //Home controller
     public function findPublicPost($id){
-        $post = Post::find($id);
-        return $post->status == Post::PUBLIC_STATUS ? $post : null;
+        $post = Post::public()->find($id);
+        return $post;
     }
 
     public function searchPublicPost($key, $perPage){
         if($key){
-            $posts = Post::where('status', '=', Post::PUBLIC_STATUS)->search($key)
+            $posts = Post::public()->search($key)
                 ->with('categories')->with('tags')->orderBy('id','DESC')->paginate($perPage);
         }
         else{
-            $posts = Post::where('status', '=', Post::PUBLIC_STATUS)
-                ->orderBy('id','DESC')->paginate($perPage);
+            $posts = Post::public()->orderBy('id','DESC')->paginate($perPage);
         }
         return $posts;
     }

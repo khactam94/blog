@@ -1,4 +1,17 @@
 <!-- Name Field -->
+<div class="row" style="margin: 0 10px 0 25px;">
+    <div class="form-group text-center" style="margin: 0 auto; width: 400px; display: block;">
+        {!! Form::label('avatar', __('users.label_avatar')) !!}
+        <input name="avatar" type="file" id="avatar" style="display: none">
+        <div class="row">
+            <button type="button" class="btn btn-info" id="avatar_edit"><i class="fa fa-fw fa-edit"></i></button>
+            <button type="button" class="btn btn-default" id="avatar_remove"><i class="fa fa-fw fa-remove"></i></button>
+        </div>
+        <img src="{{ asset(config('path.avatar').$user->avatar) }}" id="pre_avatar" class="img-rounded" width="400"
+             height="300"/>
+    </div>
+</div>
+
 <div class="row" style="margin: 0 10px 0 10px;">
     <div class="form-group col-md-6">
         <!-- Name Field -->
@@ -28,22 +41,22 @@
         <!-- Full Name Field -->
         <div class="form-group">
             {!! Form::label('full_name', __('users.label_full_name')) !!}
-            {!! Form::text('full_name', isset($profile->full_name) ? $profile->full_name : null, ['class' => 'form-control']) !!}
+            {!! Form::text('full_name', null, ['class' => 'form-control']) !!}
         </div>
         <!-- Phone number Field -->
         <div class="form-group">
             {!! Form::label('phone_number', __('users.label_phone_number')) !!}
-            {!! Form::text('phone_number', isset($profile->phone_number) ? $profile->phone_number : null, ['class' => 'form-control']) !!}
+            {!! Form::text('phone_number', null, ['class' => 'form-control']) !!}
         </div>
         <!-- Address Field -->
         <div class="form-group">
             {!! Form::label('address', __('users.label_address')) !!}
-            {!! Form::text('address', isset($profile->address) ? $profile->address : null, ['class' => 'form-control']) !!}
+            {!! Form::text('address', null, ['class' => 'form-control']) !!}
         </div>
         <!-- Birthday Field -->
         <div class="form-group">
             {!! Form::label('birthday', __('users.label_birthday')) !!}
-            {!! Form::date('birthday', isset($profile->birthday) ? $profile->birthday : null, ['class' => 'form-control']) !!}
+            {!! Form::date('birthday', null, ['class' => 'form-control']) !!}
         </div>
     </div>
 </div>

@@ -6,16 +6,17 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreMyPostRequest;
 use App\Http\Requests\UpdateMyPostRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Event;
-use App\Models\Post;
-use App\Models\Category;
-use App\Models\Tag;
-use App\Models\CategoriesPost;
-use App\Models\TagsPost;
+use App\Repositories\PostRepository;
 use App\Http\Controllers\AppBaseController;
 
 class MyPostController extends AppBaseController
 {
+    private $postRepository;
+    function __construct(PostRepository $postRepo)
+    {
+        $this->postRepository = $postRepo;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,9 +24,10 @@ class MyPostController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $posts = Post::where('user_id', '=', Auth::user()->id)->orderBy('id','DESC')->paginate(5);
-        return view('my_posts.index',compact('posts'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        $posts = $request->has('q') ?
+            $this->postRepository->searchPostsByAuthor(Auth::user()->id, $request->input('q'), 20)
+        :   $this->postRepository->getPostsByAuthor(Auth::user()->id, 20);
+        return view('my_posts.index',compact('posts'));
     }
 
     /**
@@ -46,31 +48,11 @@ class MyPostController extends AppBaseController
      */
     public function store(StoreMyPostRequest $request)
     {
-        $input =[];
         $input = $request->all();
         $input['user_id'] = Auth::user()->id;
-        $input['view'] = 0;
-        $input['status'] = 0;
-        
         $post = Post::create($input);
-        if($request->has('categories')) {
-            $categories = explode(',', $request->input('categories'));
-            $category_ids =[];
-            foreach ($categories as $key => $value) {
-                $category = Category::where('name', trim($value))->first();
-                $category ? $category_ids[$key] = $category->id : null;
-            }
-            $post->categories()->sync($category_ids);
-        }
-        if($request->has('tags')) {
-            $tags = explode(',', $request->input('tags'));
-            $tag_ids = [];
-            foreach ($tags as $key => $value) {
-                $tag = Tag::where('name', $value)->first();
-                $tag ? $tag_ids[$key] = $tag->id : null;
-            }
-            $post->tags()->sync($tag_ids);
-        }
+        $this->postRepository->saveCategories($post, $request->has('categories') ? $request->input('categories') : false);
+        $this->postRepository->saveTags($post, $request->has('tags') ? $request->input('tags'): false);
 
         return redirect()->route('my_posts.index')
             ->with('success','posts created successfully');
@@ -84,13 +66,8 @@ class MyPostController extends AppBaseController
      */
     public function show($id)
     {
-        $post = Post::where('user_id', '=', Auth::user()->id)->where('id', '=', $id)->first();
-        
-        if($post == null){
-            return redirect()->route('my_posts.index')
-            ->with('error','Posts not found');
-        }
-        
+        $post = $this->postRepository->getPostByAuthor($id, Auth::user()->id);
+        if($post == null) abort(403);
         return view('my_posts.show',compact('post'));
     }
 
@@ -102,12 +79,8 @@ class MyPostController extends AppBaseController
      */
     public function edit($id)
     {
-        $post = Post::where('id',$id)->where('user_id', Auth::user()->id)->first();
-
-        if($post == null){
-            return redirect()->route('my_posts.index')
-            ->with('error','Posts not found');
-        }
+        $post = $this->postRepository->getPostByAuthor($id, Auth::user()->id);
+        if($post == null) abort(403);
 
         return view('my_posts.edit',compact('post'));
     }
@@ -121,34 +94,13 @@ class MyPostController extends AppBaseController
      */
     public function update(UpdateMyPostRequest $request, $id)
     {
-        $post = Post::where('id',$id)->where('user_id', Auth::user()->id)->first();
-
-        if($post == null){
-            return redirect()->route('my_posts.index')
-            ->with('error','Posts not found');
-        }
+        $post = $this->postRepository->getPostByAuthor($id, Auth::user()->id);
+        if($post == null) abort(403);
 
         $status = $post->update($request->all());
-        if(!$status) return back()->with('error', 'Update post failed.'); 
-
-        if($request->has('categories')) {
-            $categories = explode(',', $request->input('categories'));
-            $category_ids =[];
-            foreach ($categories as $key => $value) {
-                $category = Category::where('name', trim($value))->first();
-                $category ? $category_ids[$key] = $category->id : null;
-            }
-            $post->categories()->sync($category_ids);
-        }
-        if($request->has('tags')) {
-            $tags = explode(',', $request->input('tags'));
-            $tag_ids = [];
-            foreach ($tags as $key => $value) {
-                $tag = Tag::where('name', $value)->first();
-                $tag ? $tag_ids[$key] = $tag->id : null;
-            }
-            $post->tags()->sync($tag_ids);
-        }
+        if(!$status) return back()->with('error', 'Update post failed.');
+        $this->postRepository->saveCategories($post, $request->has('categories') ? $request->input('categories') : false);
+        $this->postRepository->saveTags($post, $request->has('tags') ? $request->input('tags'): false);
 
         return redirect()->route('my_posts.index')
             ->with('success','Post updated successfully');
@@ -162,13 +114,8 @@ class MyPostController extends AppBaseController
      */
     public function destroy($id)
     {
-        $post = Post::where('id',$id)->where('user_id', Auth::user()->id)->first();
-
-        if($post == null){
-            return redirect()->route('my_posts.index')
-            ->with('error','Posts not found');
-        }
-
+        $post = $this->postRepository->getPostByAuthor($id, Auth::user()->id);
+        if($post == null) abort(403);
         // Remove all tags, categories
         TagsPost::where('post_id', $post->id)->delete();
         CategoriesPost::where('post_id', $post->id)->delete();

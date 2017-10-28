@@ -12,13 +12,13 @@
 
     <!-- Styles -->
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('app/app.css')}}">
     <!-- jQuery library -->
-    <script src="{{ asset('js/jquery.min.js')}}"></script>
-
+    <script src="{{ asset('vendor/jQuery/jquery-2.2.3.min.js')}}"></script>
     <!-- Latest compiled JavaScript -->
-    <script src="{{ asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('vendor/bootstrap/bootstrap.min.js')}}"></script>
     @yield('css')
     <!-- Scripts -->
     <script>
@@ -80,6 +80,9 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{route('profiles.index')}}">Profile</a>
+                                    </li>
                                     @if( Auth::user()->hasRole('admin'))
                                         <li>
                                             <a href="{{route('admin.posts.index')}}">All posts</a>
@@ -109,6 +112,11 @@
 
         @yield('content')
     </div>
+    <footer class="main-footer">
+        <strong>Copyright © 2014-2016 <a href="https://github.com/12t4bkdn/blog">Sample blog, sample laravel</a>.</strong> All rights
+        reserved.
+    </footer>
+    <script src="{{ asset('app/app.js')}}"></script>
     @yield('scripts')
 </body>
 </html>

@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Laravel',
+    'name' => 'Blog',
 
     /*
     |--------------------------------------------------------------------------
@@ -184,8 +184,10 @@ return [
         \InfyOm\AdminLTETemplates\AdminLTETemplatesServiceProvider::class, 
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
-        Elasticquent\ElasticquentServiceProvider::class,
-
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        Yajra\DataTables\ButtonsServiceProvider::class,
+        Yajra\DataTables\HtmlServiceProvider::class,
+        Spatie\Backup\BackupServiceProvider::class,
     ],
 
     /*
@@ -240,8 +242,7 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
-        'Es' => Elasticquent\ElasticquentElasticsearchFacade::class,
-        
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
     ],
 
 ];

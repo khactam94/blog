@@ -3,21 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Post;
-use App\Models\User;
 use App\Models\Tag;
 use App\Models\Category;
-use Illuminate\Support\Facades\Mail;
+use App\Repositories\PostRepository;
 
 class HomeController extends AppBaseController
 {
+    private $postRepository;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(PostRepository $postRepo)
     {
+        $this->postRepository = $postRepo;
     }
 
     /**
@@ -27,24 +27,14 @@ class HomeController extends AppBaseController
      */
     public function index(Request $request)
     {
-        if($request->has('q')){
-            if(config('database.default') ==='pgsql'){
-                $posts = Post::where('status', 2)->where('title', 'ilike', '%'.$request->q.'%')->orderBy('id','DESC')->paginate(25);
-            }
-            elseif(config('database.default') ==='mysql'){
-                $posts = Post::where('status', 2)->where('UPPER(title)', 'ilike', '%'.strtoupper($request->q).'%')
-                        ->orderBy('id','DESC')->paginate(25);
-            }
-            else{
-                $posts = Post::where('status', 2)->where('title', 'ilike', '%'.$request->q.'%')
-                        ->orderBy('id','DESC')->paginate(25);
-            }
+        ini_set('max_execution_time', 300);
+        $posts = $this->postRepository->searchPublicPost($request->q, 5);
+        if ($request->ajax()) {
+            $view = view('postdata',compact('posts'))->render();
+            return response()->json(['html'=>$view]);
         }
-        else {
-            $posts = Post::where('status', 2)->orderBy('id','DESC')->paginate(25);
-        }
-        $tags = Tag::paginate(25);
-        $categories = Category::paginate(25);
+        $tags = Tag::take(25)->get();
+        $categories = Category::take(25)->get();
         return view('home', compact('posts', 'tags', 'categories'));
     }
 }

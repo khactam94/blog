@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Models\CategoriesPost;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
@@ -144,16 +145,14 @@ class CategoryController extends AppBaseController
     public function destroy($id)
     {
         $category = Category::find($id);
-
         if (empty($category)) {
             Flash::error('Category not found');
 
             return redirect(route('admin.categories.index'));
         }
-
+        CategoriesPost::where('category_id', $category->id)->delete();
         $category->delete();
         Flash::success('Category deleted successfully.');
-
         return redirect(route('admin.categories.index'))->with('success', 'Category deleted successfully.');
     }
 }

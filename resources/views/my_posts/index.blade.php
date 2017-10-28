@@ -33,19 +33,19 @@
                             <th>Title</th>
                             <th>Description</th>
                             <th>Status</th>
-                            <th width="280px">Action</th>
+                            <th width="200px">Action</th>
                         </tr>
                         @foreach ($posts as $key => $post)
                             <tr>
-                                <td>{{ ++$i }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $post->title }}</td>
                                 <td>{{ \Illuminate\Support\Str::words(strip_tags($post->content), 115, '...') }}</td>
-                                <td>{{ $post->status }}</td>
+                                <td>{{ config('status')[$post->status] }}</td>
                                 <td>
-                                    <a class="btn btn-info" href="{{ route('my_posts.show',$post->id) }}">Show</a>
-                                    <a class="btn btn-primary" href="{{ route('my_posts.edit',$post->id) }}">Edit</a>
+                                    <a class="btn btn-info btn-sm" href="{{ route('my_posts.show',$post->id) }}">Show</a>
+                                    <a class="btn btn-primary btn-sm" href="{{ route('my_posts.edit',$post->id) }}">Edit</a>
                                     {!! Form::open(['method' => 'DELETE','route' => ['my_posts.destroy', $post->id],'style'=>'display:inline']) !!}
-                                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                    {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
                                     {!! Form::close() !!}
                                 </td>
                             </tr>

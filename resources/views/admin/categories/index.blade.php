@@ -7,27 +7,35 @@
 @endsection
 
 @section('content')
-<div class="container">
-        <div class="row">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="pull-left" style="margin-left: 20px">
-                            <h2>Category List</h2>
-                        </div>
-                        <div class="pull-right" style="margin: 20px">
-                            <a class="btn btn-success" href="{{ route('admin.categories.create') }}"> Add New</a>
-                        </div>
-                    </div>
-                </div>
+<section class="content-header">
+    <h1>
+        Categories
+        <small>of posts</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active"><a href="#">Categories</a></li>
+    </ol>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Category List</h3>
 
-                <div class="panel-body">
-                    @include('flash::message')
-                    @include('admin.categories.table')
-                </div>
+            <div class="box-tools">
+                <a class="btn btn-success" href="{{ route('admin.categories.create') }}"> Add New</a>
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
             </div>
         </div>
-    </div>   
+        <!-- /.box-header -->
+        <div class="box-body table-responsive">
+            @include('flash::message')
+            @include('admin.categories.table')
+        </div>
+        <!-- /.box-body -->
+    </div>
+</section>
 @endsection
 
 @section('scripts')

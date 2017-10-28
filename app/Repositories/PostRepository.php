@@ -82,16 +82,7 @@ class PostRepository extends BaseRepository
             .'<div class="btn-group">'
             .'<a href="'.route("admin.posts.show", $id).'" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a> '
             .'<a href="'.route('admin.posts.edit', $id).'" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a>'
-            .'<button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(\'Are you sure?\')"
-                           data-tr="tr_'.$id.'"
-                           data-toggle="confirmation"
-                           data-btn-ok-label="Delete" data-btn-ok-icon="fa fa-remove"
-                           data-btn-ok-class="btn btn-sm btn-danger"
-                           data-btn-cancel-label="Cancel"
-                           data-btn-cancel-icon="fa fa-chevron-circle-left"
-                           data-btn-cancel-class="btn btn-sm btn-default"
-                           data-title="Are you sure you want to delete ?"
-                           data-placement="left" data-singleton="true"><i class="glyphicon glyphicon-trash"></i></button>'
+            .'<button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(\'Are you sure?\')"><i class="glyphicon glyphicon-trash"></i></button>'
             .'</div>'
             .'</form>';
     }
@@ -108,6 +99,7 @@ class PostRepository extends BaseRepository
             })
             ->addColumn('action', function ($post) {
                 return $this->getActionButton($post->id);
+                //view('admin.posts.datatables.action', compact('post'))->render();
             })
             ->addColumn('checkbox', function ($post) {
                 return '<input type="checkbox" class="sub_chk" data-id="'.$post->id.'">';

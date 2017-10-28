@@ -1,4 +1,4 @@
-<table class="table table-responsive" id="categories-table">
+<table class="table table-hover" id="categories-table">
     <thead>
         <th>No</th>
         <th>Name</th>
@@ -11,9 +11,9 @@
             <td>{{ $category->name }}</td>
             <td style="width: 20%">
                 <div class='btn-group'>
-                    <a href="{{ route('admin.categories.show', [$category->id]) }}" class='btn btn-default'>Show</a>
-                    <a href="{{ route('admin.categories.edit', [$category->id]) }}" class='btn btn-primary'>Edit</a>
-                    <a href="{{ route('api.categories.destroy', $category->id) }}" class="btn btn-danger"
+                    <a href="{{ route('admin.categories.show', [$category->id]) }}" class='btn btn-default btn-sm'>Show</a>
+                    <a href="{{ route('admin.categories.edit', [$category->id]) }}" class='btn btn-primary btn-sm'>Edit</a>
+                    <a href="{{ route('api.categories.destroy', $category->id) }}" class="btn btn-danger btn-sm"
                        data-tr="tr_{{$category->id}}"
                        data-toggle="confirmation"
                        data-btn-ok-label="Delete" data-btn-ok-icon="fa fa-remove"

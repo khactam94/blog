@@ -12,9 +12,9 @@
             <td width="20%">
                 {!! Form::open(['route' => ['admin.tags.destroy', $tag->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>
-                    <a href="{!! route('admin.tags.show', [$tag->id]) !!}" class='btn btn-default'>Show</a>
-                    <a href="{!! route('admin.tags.edit', [$tag->id]) !!}" class='btn btn-primary'>Edit</a>
-                    {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger', 'onclick' => "return confirm('Are you sure?')"]) !!}
+                    <a href="{!! route('admin.tags.show', [$tag->id]) !!}" class='btn btn-default btn-sm'>Show</a>
+                    <a href="{!! route('admin.tags.edit', [$tag->id]) !!}" class='btn btn-primary btn-sm'>Edit</a>
+                    {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure?')"]) !!}
                 </div>
                 {!! Form::close() !!}
             </td>

@@ -7,86 +7,96 @@
 @endsection
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="pull-left" style="margin-left: 20px">
-                            <h2>Post List</h2>
+    <section class="content-header">
+        <h1>
+            Posts
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active"><a href="#">Posts</a></li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Post List</h3>
+
+                <div class="box-tools">
+                    <a class="btn btn-success" href="{{ route('admin.posts.create') }}"> Create New Post</a>
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive">
+                @if ($message = Session::get('success'))
+                    <div class="alert alert-success">
+                        <p>{{ $message }}</p>
+                    </div>
+                @endif
+                @if ($message = Session::get('error'))
+                    <div class="alert alert-danger">
+                        <p>{{ $message }}</p>
+                    </div>
+                @endif
+                <table class="table table-bordered datatable" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th style="width: 5%"><input type="checkbox" id="master_chk"></th>
+                        <th style="width: 5%">Id</th>
+                        <th style="width: 30%">Title</th>
+                        <th style="width: 40%">Content</th>
+                        <th style="width: 5%">Author</th>
+                        <th style="width: 5%">Status</th>
+                        <th style="width: 10%">Action</th>
+                    </tr>
+                    </thead>
+
+                </table>
+
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <div class="row" style="margin: 10px 0px">
+                    <div class="btn-group text-left">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                Export <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ route('admin.posts.export', 'xlsx') }}">Excel</a></li>
+                                <li><a href="{{ route('admin.posts.export', 'csv') }}">CSV</a></li>
+                                <li><a href="{{ route('admin.posts.export', 'pdf') }}">PDF</a></li>
+                            </ul>
                         </div>
-                        <div class="pull-right" style="margin: 20px">
-                            <a class="btn btn-success" href="{{ route('admin.posts.create') }}"> Create New Post</a>
-                        </div>
+                        <button class="btn btn-info"  data-toggle="collapse" data-target="#importPost">Import</button>
+                    </div>
+                    <div class="btn-group" style="float: right;">
+                        <button class="btn btn-danger delete_all">Delete All Selected Records</button>
                     </div>
                 </div>
+                <div class="row collapse" style="margin: 10px 0px" id="importPost">
+                    <div class="col-md-3">
+                        <form role="form" action="{{ route('admin.posts.import') }}" method="POST" enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="exampleInputFile">File input</label>
+                                    <input type="file" id="excelFile" name="excelFile">
 
-                <div class="panel-body">
-                    @if ($message = Session::get('success'))
-                        <div class="alert alert-success">
-                            <p>{{ $message }}</p>
-                        </div>
-                    @endif
-                    @if ($message = Session::get('error'))
-                        <div class="alert alert-danger">
-                            <p>{{ $message }}</p>
-                        </div>
-                    @endif
-                    <table class="table table-bordered datatable" style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th style="width: 5%"><input type="checkbox" id="master_chk"></th>
-                                <th style="width: 5%">Id</th>
-                                <th style="width: 30%">Title</th>
-                                <th style="width: 40%">Content</th>
-                                <th style="width: 5%">Author</th>
-                                <th style="width: 5%">Status</th>
-                                <th style="width: 10%">Action</th>
-                            </tr>
-                        </thead>
-
-                    </table>
-                    <div class="row" style="margin: 10px 0px">
-                        <div class="btn-group text-left">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                                    Export <span class="caret"></span></button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{ route('admin.posts.export', 'xlsx') }}">Excel</a></li>
-                                    <li><a href="{{ route('admin.posts.export', 'csv') }}">CSV</a></li>
-                                    <li><a href="{{ route('admin.posts.export', 'pdf') }}">PDF</a></li>
-                                </ul>
+                                    <p class="help-block">Example block-level help text here.</p>
+                                </div>
                             </div>
-                            <button class="btn btn-info"  data-toggle="collapse" data-target="#importPost">Import</button>
-                        </div>
-                        <div class="btn-group" style="float: right;">
-                            <button class="btn btn-danger delete_all">Delete All Selected Records</button>
-                        </div>
+                            <!-- /.box-body -->
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="row collapse" style="margin: 10px 0px" id="importPost">
-                        <div class="col-md-3">
-                            <form role="form" action="{{ route('admin.posts.import') }}" method="POST" enctype="multipart/form-data">
-                                {{ csrf_field() }}
-                                <div class="box-body">
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">File input</label>
-                                        <input type="file" id="excelFile" name="excelFile">
-
-                                        <p class="help-block">Example block-level help text here.</p>
-                                    </div>
-                                </div>
-                                <!-- /.box-body -->
-                                <div class="box-footer">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 @endsection
 
 @section('scripts')
@@ -170,13 +180,21 @@
                 }
             });
 
+            $('.datatable tbody').on('click','button[data-toggle=confirmation]', function (e) {
+                e.preventDefault();
+                $('button[data-toggle=confirmation]').confirmation('show');
+                document.querySelector('a[data-apply="confirmation"]').onclick = function(){
+                    alert('xyz');
+                };
+            });
+            $(document).on('click', 'a[data-apply=confirmation]',function(e){
+                alert('abc');
+                $(this).parents('form:first').submit();
+            });
             $('[data-toggle=confirmation]').confirmation({
                 rootSelector: '[data-toggle=confirmation]',
-                // other options
             });
-            $('body').on('confirmed.bs.confirmation', '.delete-record', function() {
-                deleteForm($(this).attr('data-delid'));
-            });
+
         });
     </script>
 

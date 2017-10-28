@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
-
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Models\Category;
 use Response;
 use Flash;
-
+use App\Repositories\CategoryRepository;
 class CategoryController extends AppBaseController
 {
-    public function __construct()
+    private $categoryRepository;
+    public function __construct(CategoryRepository $categoryRepo)
     {
+        $this->categoryRepository = $categoryRepo;
     }
 
     /**
@@ -32,15 +33,7 @@ class CategoryController extends AppBaseController
 
     public function search(Request $request)
     {
-        if(config('database.default') =='pgsql'){
-            $categories = Category::where('name', 'ilike', '%'.$request->input('query').'%')->paginate(10)->pluck('name');
-        }
-        elseif(config('database.default') =='mysql'){
-            $categories = Category::where('UPPER(name)', 'like', '%'.strtoupper($request->input('query')).'%')->paginate(10)->pluck('name');
-        }
-        else{
-            $categories = Category::where('name', 'like', '%'.$request->input('query').'%')->paginate(10)->pluck('name');
-        }
+        $categories = $this->categoryRepository->search($request->input('query'));
         return json_encode($categories);
     }
 
@@ -48,7 +41,7 @@ class CategoryController extends AppBaseController
      * Display the specified Category.
      *
      * @param  int $id
-     find     * @return Response
+    find     * @return Response
      */
     public function show($id)
     {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Models\TagsPost;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\StoreTagRequest;
 use App\Http\Requests\Admin\UpdateTagRequest;
@@ -129,13 +130,11 @@ class TagController extends AppBaseController
     public function destroy($id)
     {
         $tag = Tag::find($id);
-
         if (empty($tag)) {
             return redirect(route('admin.tags.index'))->with('error', 'Tag not found');
         }
-
+        TagsPost::where('tag_id', $tag->id)->delete();
         $tag->delete();
-
         return redirect(route('admin.tags.index'))->with('success', 'Tag deleted successfully.');
     }
 }

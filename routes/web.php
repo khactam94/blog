@@ -40,7 +40,8 @@ Route::group(['middleware' => ['auth']], function(){
 //For admin
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function() {
 	Route::resource('posts', 'PostController', ['middleware' => 'permission:posts-manager']);
-
+    Route::get('post/datatable', 'PostController@datatable')->name('posts.list');
+    Route::delete('deleteAllPosts', 'PostController@deleteAll')->name('posts.deleteAll');
 	Route::resource('tags', 'TagController', ['middleware' => 'permission:tags-manager']);
 
 	Route::resource('categories', 'CategoryController', ['middleware' => 'permission:categories-manager']);
@@ -52,9 +53,26 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Adm
 	Route::resource('permissions', 'PermissionController', ['middleware' => 'permission:permissions-manager']);
 	
 	Route::get('/download', 'BackupController@download');
+	Route::get('post/export/{type?}', 'PostController@export', ['middleware' => 'permission:post-export-import'])
+        ->name('posts.export')->where('type', 'xlsx|xls|pdf|csv');;
+	Route::post('post/import', 'PostController@import', ['middleware' => 'permission:post-export-import'])
+        ->name('posts.import');
+
 });
 
+Route::group(['middleware' => ['auth'], 'prefix' => 'api', 'namespace' => 'API', 'as' => 'api.'], function() {
+    Route::resource('categories', 'APICategoryController', ['only' => 'destroy', 'middleware' => 'permission:categories-manager']);
+});
 //For test
 Route::get('mail', 'HomeController@mail');
 
 Route::get('/send_email', array('uses' => 'EmailController@sendEmailReminder'));
+
+Route::resource('items', 'ItemController');
+Route::get('item/datatable', 'ItemController@datatable')->name('items.list');
+
+//--------------------------------------- donate -----------------------------------------------------
+// Get Route For Show Payment Form
+Route::get('donate', 'RazorpayController@donate')->name('donate');
+// Post Route For Makw Payment Request
+Route::post('payment', 'RazorpayController@payment')->name('payment');

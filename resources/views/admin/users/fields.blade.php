@@ -40,6 +40,13 @@
 
 <div class="col-xs-12 col-sm-6 col-sm-offset-1">
     <div class="form-group">
+        {!! Form::label('active', 'Status: ') !!}
+        {!! Form::select('active', $statuses, $user->active, array('class' => 'form-control')) !!}
+    </div>
+</div>
+
+<div class="col-xs-12 col-sm-6 col-sm-offset-1">
+    <div class="form-group">
     	{!! Form::label('roles', 'Role:') !!}
         {!! Form::select('roles[]', $roles, isset($userRole) ? $userRole : null,  array('class' => 'form-control','multiple')) !!}
     </div>

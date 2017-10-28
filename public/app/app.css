@@ -1,0 +1,21 @@
+.main-footer{
+    min-height: 50px;
+    color: black;
+    padding: 15px 10%;
+}
+.panel{
+    position: relative;
+    border-radius: 3px;
+    background: #ffffff;
+    border-top: 3px solid #d2d6de;
+    margin-bottom: 20px;
+    width: 100%;
+    border-top-color: #00c0ef;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+.panel .panel-heading {
+    color: #444;
+    display: block;
+    padding: 10px;
+    position: relative;
+}

@@ -5,6 +5,7 @@
         <th>Email</th>
         <th>Password</th>
         <th>Roles</th>
+        <th>Active</th>
         <th colspan="3">Action</th>
     </thead>
     <tbody>
@@ -20,7 +21,8 @@
                     <label class="label label-success">{{ $v->display_name }}</label>
                 @endforeach
                 @endif
-            
+            </td>
+            <td>{!! $user->active !!}</td>
             <td>
                 {!! Form::open(['route' => ['admin.users.destroy', $user->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>

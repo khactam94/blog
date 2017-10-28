@@ -22,8 +22,7 @@ class UserController extends Controller
     {
         $users = User::orderBy('id','DESC')->paginate(25);
 
-        return view('admin.users.index',compact('users'))
-            ->with('i', ($request->input('page', 1) - 1) * 25);
+        return view('admin.users.index',compact('users'));
     }
 
     /**
@@ -34,8 +33,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all()->pluck('display_name','id');
-
-        return view('admin.users.create',compact('roles'));
+        $statuses = ['unactive', 'active', 'block'];
+        return view('admin.users.create',compact('roles', $statuses));
     }
 
     /**
@@ -81,8 +80,8 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::all()->pluck('display_name','id');
         $userRole = $user->roles->pluck('id','id')->toArray();
-
-        return view('admin.users.edit',compact('user','roles','userRole'));
+        $statuses = ['unactive', 'active', 'block'];
+        return view('admin.users.edit',compact('user','roles','userRole','statuses'));
     }
 
     /**

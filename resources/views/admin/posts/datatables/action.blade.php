@@ -1,11 +1,11 @@
-<form method="POST" action="{{ route('admin.posts.destroy', $id) }}" accept-charset="UTF-8">
+<form method="POST" action="{{ route('admin.posts.destroy', $post->id) }}" accept-charset="UTF-8">
     <input name="_method" type="hidden" value="DELETE">
     {{ csrf_field() }}
     <div class="btn-group">
-        <a href="{{ route("admin.posts.show", $id)}}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
-        <a href="{{route('admin.posts.edit', $id)}}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+        <a href="{{ route("admin.posts.show", $post->id)}}" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a>
+        <a href="{{route('admin.posts.edit', $post->id)}}" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
         <button type="submit" class="btn btn-danger btn-xs"
-                  data-tr="tr_{{ $id }}"
+                  data-tr="tr_{{ $post->id }}"
                   data-toggle="confirmation"
                   data-btn-ok-label="Delete" data-btn-ok-icon="fa fa-remove"
                   data-btn-ok-class="btn btn-sm btn-danger"

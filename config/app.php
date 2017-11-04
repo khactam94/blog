@@ -188,6 +188,9 @@ return [
         Yajra\DataTables\ButtonsServiceProvider::class,
         Yajra\DataTables\HtmlServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
+
+
     ],
 
     /*
@@ -243,6 +246,8 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Uuid' => Webpatser\Uuid\Uuid::class,
+        'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
     ],
 
 ];

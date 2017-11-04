@@ -19,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\PostEvent' => [
             'App\Listeners\ViewPostHandler',
         ],
+        'App\Events\NotifyPost' => [
+            'App\Listeners\NotifyPostListener',
+        ],
     ];
 
     /**
@@ -31,5 +34,6 @@ class EventServiceProvider extends ServiceProvider
         parent::boot();
 
         Event::listen('posts.view', 'App\Listeners\ViewPostHandler');
+        Event::listen('posts.notify', 'App\Listeners\NotifyPostListener');
     }
 }

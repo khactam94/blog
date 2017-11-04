@@ -9,7 +9,6 @@ use App\Repositories\PermissionRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Flash;
-use App\Models\Permission;
 
 class PermissionController extends Controller
 {
@@ -63,8 +62,8 @@ class PermissionController extends Controller
         DB::table('permissions')->insert([
             ['name' => $input['name'], 'display_name' => $input['display_name'], 'description' => $input['description']]
         ]);
-        Flash::success('Permission saved successfully.');
 
+        Flash::success('Permission saved successfully.');
         return redirect(route('admin.permissions.index'));
     }
 

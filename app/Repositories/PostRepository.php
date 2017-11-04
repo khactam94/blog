@@ -98,8 +98,8 @@ class PostRepository extends BaseRepository
                 return config('status.'.$post->status);
             })
             ->addColumn('action', function ($post) {
-                return $this->getActionButton($post->id);
-                //view('admin.posts.datatables.action', compact('post'))->render();
+                //return $this->getActionButton($post->id);
+                return view('admin.posts.datatables.action', compact('post'))->render();
             })
             ->addColumn('checkbox', function ($post) {
                 return '<input type="checkbox" class="sub_chk" data-id="'.$post->id.'">';

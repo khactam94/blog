@@ -2,7 +2,7 @@
 
 @section('css')
     <link href="{{ asset('ckeditor/plugins/codesnippet/lib/highlight/styles/default.css')}}" rel="stylesheet">
-    <script src="{{asset('ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js')}}"></script>
+    <link href="{{ asset('ckeditor/custom.css')}}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -31,11 +31,9 @@
 
                 <div class="panel-body">
                     <div class="row">
-                		<div id='posteditor' class="pull-left" style="padding: 50px">
+                		<div id='posteditor' class="pull-left" style="padding: 20px">
                             {!! $post->content !!}
                         </div>
-                        <script src="http://giaphiep.com/plugins/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js"></script>
- 	                    <script>hljs.initHighlightingOnLoad();</script>
                     </div>
                     <hr>
                     <div class="row" style="margin-left: 10px;">
@@ -52,4 +50,6 @@
             </div>
         </div>
     </div>
+    <script src="http://giaphiep.com/plugins/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 @endsection

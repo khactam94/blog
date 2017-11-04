@@ -57,7 +57,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Adm
         ->name('posts.export')->where('type', 'xlsx|xls|pdf|csv');;
 	Route::post('post/import', 'PostController@import', ['middleware' => 'permission:post-export-import'])
         ->name('posts.import');
-
+    Route::get('statistics/', 'StatisticController@index')->name('statistics.index');
 });
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'api', 'namespace' => 'API', 'as' => 'api.'], function() {
@@ -76,3 +76,7 @@ Route::get('item/datatable', 'ItemController@datatable')->name('items.list');
 Route::get('donate', 'RazorpayController@donate')->name('donate');
 // Post Route For Makw Payment Request
 Route::post('payment', 'RazorpayController@payment')->name('payment');
+
+// Add these two lines
+Route::post('/emails/subcribe', 'ContactController@sendSubcribeLink')->name('emails.subcribe');
+Route::get('/emails/subcribe/{token}', 'ContactController@subcribe')->name('subcribe');

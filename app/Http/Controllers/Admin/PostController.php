@@ -15,6 +15,7 @@ use App\Repositories\CategoryRepository;
 use App\Repositories\UserRepository;
 use Excel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Event;
 
 class PostController extends AppBaseController
 {
@@ -113,7 +114,9 @@ class PostController extends AppBaseController
         if(!$status) return back()->with('error', 'Update post failed.');
         $this->postRepository->saveCategories($post, $request->has('categories') ? $request->input('categories') : false);
         $this->postRepository->saveTags($post, $request->has('tags') ? $request->input('tags'): false);
-
+        if($post->status = 2){
+            Event::fire('posts.notify', $post);
+        }
         return redirect()->route('admin.posts.index')
             ->with('success','Post updated successfully');
     }
@@ -193,7 +196,7 @@ class PostController extends AppBaseController
                             $post['content'] = $value['content'];
                             $post['status'] = $value['status'];
                             $post['view'] = $value['view'];
-                            $post['user_id'] = $this->userRepository->findForce($value['view'])->id;
+                            $post['user_id'] = $this->userRepository->findForce($value['author'])->id;
 
                             $post['categories'] = [];
                             foreach (explode( ',', $value['category']) as $category){

@@ -1,6 +1,7 @@
 <li class="{{ Request::is('admin/posts*') ? 'active' : '' }}"><a href="{{route('admin.posts.index')}}">Posts</a></li>
 <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}"><a href="{{route('admin.categories.index')}}">Categories</a></li>
 <li class="{{ Request::is('admin/tags*') ? 'active' : '' }}"><a href="{{route('admin.tags.index')}}">Tags</a></li>
+<li class="{{ Request::is('admin/statistics*') ? 'active' : '' }}"><a href="{{route('admin.statistics.index')}}">Statistics</a></li>
 @role('admin')
 <li class="treeview {{ Request::is('admin/users*') || Request::is('admin/permissions*') || Request::is('admin/roles*')? 'active' : '' }}">
     <a href="#">

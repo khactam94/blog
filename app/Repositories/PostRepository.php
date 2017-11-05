@@ -46,6 +46,13 @@ class PostRepository extends BaseRepository
         $post = Post::public()->find($id);
         return $post;
     }
+    //Home controller
+    public function getStatusPosts($status){
+        $statuses = config('status');
+        $id = array_search($status, $statuses);
+        $posts = Post::where('status', $id)->paginate(10);
+        return $posts;
+    }
 
     public function searchPublicPost($key, $perPage){
         if($key){

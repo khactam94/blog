@@ -53,7 +53,7 @@
                     @endif
                     {!! Form::open(['route' => 'emails.subcribe', 'id' => 'subcribe_form']) !!}
                         <div class="input-group input-group-sm">
-                            <input type="email" class="form-control" placeholder="Email" name='email' value="khac.tam.94@gmail.com">
+                            <input type="email" class="form-control" placeholder="Email" name='email'>
                             <span class="input-group-btn">
                               <button type="button" class="btn btn-info btn-flat" onclick="$('#subcribe_form').submit()">Submit</button>
                             </span>

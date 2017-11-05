@@ -17,8 +17,7 @@ class StatisticController extends Controller
         $chart = Charts::database($users, 'bar', 'highcharts')
             ->title("Monthly new Register Users")
             ->elementLabel("Total Users")
-            ->dimensions(1000, 500)
-            ->responsive(false)
+            ->responsive(true)
             ->groupByMonth(date('Y'), true);
         return view('admin.statistics.index',compact('chart'));
     }

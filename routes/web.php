@@ -30,6 +30,19 @@ Route::get('tags/{id}', 'TagController@show')->name('tags.show');
 Route::get('categories', 'CategoryController@index')->name('categories.index');
 Route::get('categories/{id}', 'CategoryController@show')->name('categories.show');
 
+Route::resource('items', 'ItemController');
+Route::get('item/datatable', 'ItemController@datatable')->name('items.list');
+
+//--------------------------------------- donate -----------------------------------------------------
+// Get Route For Show Payment Form
+Route::get('donate', 'RazorpayController@donate')->name('donate');
+// Post Route For Makw Payment Request
+Route::post('payment', 'RazorpayController@payment')->name('payment');
+
+// Add these two lines
+Route::post('/emails/subcribe', 'ContactController@sendSubcribeLink')->name('emails.subcribe');
+Route::get('/emails/subcribe/{token}', 'ContactController@subcribe')->name('subcribe');
+
 // For memeber
 Route::group(['middleware' => ['auth']], function(){
 	Route::resource('my_posts', 'MyPostController');
@@ -41,6 +54,8 @@ Route::group(['middleware' => ['auth']], function(){
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function() {
 	Route::resource('posts', 'PostController', ['middleware' => 'permission:posts-manager']);
     Route::get('post/datatable', 'PostController@datatable')->name('posts.list');
+    Route::get('post/status/{status}', 'PostController@statusPost')->name('posts.status')
+        ->where('status', 'draft|pending|approved|denied');
     Route::delete('deleteAllPosts', 'PostController@deleteAll')->name('posts.deleteAll');
 	Route::resource('tags', 'TagController', ['middleware' => 'permission:tags-manager']);
 
@@ -54,7 +69,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Adm
 	
 	Route::get('/download', 'BackupController@download');
 	Route::get('post/export/{type?}', 'PostController@export', ['middleware' => 'permission:post-export-import'])
-        ->name('posts.export')->where('type', 'xlsx|xls|pdf|csv');;
+        ->name('posts.export')->where('type', 'xlsx|xls|pdf|csv');
 	Route::post('post/import', 'PostController@import', ['middleware' => 'permission:post-export-import'])
         ->name('posts.import');
     Route::get('statistics/', 'StatisticController@index')->name('statistics.index');
@@ -63,20 +78,3 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Adm
 Route::group(['middleware' => ['auth'], 'prefix' => 'api', 'namespace' => 'API', 'as' => 'api.'], function() {
     Route::resource('categories', 'APICategoryController', ['only' => 'destroy', 'middleware' => 'permission:categories-manager']);
 });
-//For test
-Route::get('mail', 'HomeController@mail');
-
-Route::get('/send_email', array('uses' => 'EmailController@sendEmailReminder'));
-
-Route::resource('items', 'ItemController');
-Route::get('item/datatable', 'ItemController@datatable')->name('items.list');
-
-//--------------------------------------- donate -----------------------------------------------------
-// Get Route For Show Payment Form
-Route::get('donate', 'RazorpayController@donate')->name('donate');
-// Post Route For Makw Payment Request
-Route::post('payment', 'RazorpayController@payment')->name('payment');
-
-// Add these two lines
-Route::post('/emails/subcribe', 'ContactController@sendSubcribeLink')->name('emails.subcribe');
-Route::get('/emails/subcribe/{token}', 'ContactController@subcribe')->name('subcribe');

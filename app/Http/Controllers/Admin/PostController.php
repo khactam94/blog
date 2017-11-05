@@ -46,6 +46,12 @@ class PostController extends AppBaseController
         return view('admin.posts.index');
     }
 
+    public function statusPost(Request $request, $status)
+    {
+        $posts = $this->postRepository->getStatusPosts($status);
+        return view('admin.posts.status', compact('posts'));
+    }
+
     public function datatable(){
         return $this->postRepository->getDatatable();
     }

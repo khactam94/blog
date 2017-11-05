@@ -21,9 +21,7 @@
         <div class="box">
             <div class="box-header with-border">
                 <h3 class="box-title">Post List</h3>
-
                 <div class="box-tools">
-                    <a class="btn btn-success" href="{{ route('admin.posts.create') }}"> Create New Post</a>
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     </button>
                 </div>
@@ -48,50 +46,38 @@
                         <th style="width: 30%">Title</th>
                         <th style="width: 40%">Content</th>
                         <th style="width: 5%">Author</th>
-                        <th style="width: 5%">Status</th>
                         <th style="width: 10%">Action</th>
                     </tr>
                     </thead>
-
+                    <tbody>
+                    @foreach ($posts as $key => $post)
+                        <tr>
+                            <td><input type="checkbox" class="sub_chk" data-id="{{$post->id}}"></td>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $post->title }}</td>
+                            <td>{{ \Illuminate\Support\Str::words(strip_tags($post->content), 115, '...') }}</td>
+                            <td>{{ $post->user->name }}</td>
+                            <td>
+                                <a class="btn btn-info btn-xs" href="{{ route('my_posts.show',$post->id) }}">Show</a>
+                                <a class="btn btn-primary btn-xs" href="{{ route('my_posts.edit',$post->id) }}">Edit</a>
+                                {!! Form::open(['method' => 'DELETE','route' => ['my_posts.destroy', $post->id],'style'=>'display:inline']) !!}
+                                {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}
+                                {!! Form::close() !!}
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
                 </table>
+                {!! $posts->appends(Request::only('q'))->render() !!}
 
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix">
                 <div class="row" style="margin: 10px 0px">
                     <div class="btn-group text-left">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                                Export <span class="caret"></span></button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ route('admin.posts.export', 'xlsx') }}">Excel</a></li>
-                                <li><a href="{{ route('admin.posts.export', 'csv') }}">CSV</a></li>
-                                <li style="pointer-events: none;"><a href="{{ route('admin.posts.export', 'pdf') }}">PDF</a></li>
-                            </ul>
-                        </div>
-                        <button class="btn btn-info"  data-toggle="collapse" data-target="#importPost">Import</button>
                     </div>
                     <div class="btn-group" style="float: right;">
                         <button class="btn btn-danger delete_all">Delete All Selected Records</button>
-                    </div>
-                </div>
-                <div class="row collapse" style="margin: 10px 0px" id="importPost">
-                    <div class="col-md-3">
-                        <form role="form" action="{{ route('admin.posts.import') }}" method="POST" enctype="multipart/form-data">
-                            {{ csrf_field() }}
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <label for="exampleInputFile">File input</label>
-                                    <input type="file" id="excelFile" name="excelFile">
-
-                                    <p class="help-block">Example block-level help text here.</p>
-                                </div>
-                            </div>
-                            <!-- /.box-body -->
-                            <div class="box-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -104,50 +90,27 @@
     <script type="text/javascript">
         $(document).ready(function() {
             var selected = [];
-            $('.datatable').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: '{{ route('admin.posts.list') }}',
-                columns: [
-                    {data: 'checkbox', name: 'checkbox', searchable: false, orderable: false},
-                    {data: 'id', name: 'id'},
-                    {data: 'title', name: 'title'},
-                    {data: 'content', name: 'content'},
-                    {data: 'user_id', name: 'user_id'},
-                    {data: 'status', name: 'status'},
-                    {data: 'action', name: 'action', searchable: false, orderable: false},
-                ],
-            });
-
-            $('.datatable').on('change', '.sub_chk', function(e) {
-                $(this).is(':checked',true) ? $(this).parent().parent().addClass('selected')
-                    : $(this).parent().parent().removeClass('selected');
-            });
-            $('#master_chk').on('click', function(e) {
-                if($(this).is(':checked',true))
-                {
+            $('#master_chk').on('click', function (e) {
+                if ($(this).is(':checked', true)) {
                     $(".sub_chk").prop('checked', true);
                     $(".sub_chk").parent().parent().addClass('selected')
                 } else {
-                    $(".sub_chk").prop('checked',false);
+                    $(".sub_chk").prop('checked', false);
                     $(".sub_chk").parent().parent().removeClass('selected');
                 }
             });
 
-            $('.delete_all').on('click', function(e) {
-
+            $('.delete_all').on('click', function (e) {
                 var allVals = [];
-                $(".sub_chk:checked").each(function() {
+                $(".sub_chk:checked").each(function () {
                     allVals.push($(this).attr('data-id'));
                 });
-
-                if(allVals.length <=0)
-                {
+                if (allVals.length <= 0) {
                     alert("Please select row.");
-                }  else {
-
+                }
+                else {
                     var check = confirm("Are you sure you want to delete this row?");
-                    if(check == true){
+                    if (check == true) {
 
                         var join_selected_values = allVals.join(",");
                         console.log('Delete these posts: ', join_selected_values);
@@ -155,10 +118,10 @@
                             url: '{{ route('admin.posts.deleteAll') }}',
                             type: 'DELETE',
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                            data: 'ids='+join_selected_values,
+                            data: 'ids=' + join_selected_values,
                             success: function (data) {
                                 if (data['success']) {
-                                    $(".sub_chk:checked").each(function() {
+                                    $(".sub_chk:checked").each(function () {
                                         $(this).parents("tr").remove();
                                     });
                                     alert(data['success']);
@@ -173,28 +136,12 @@
                             }
                         });
 
-                        $.each(allVals, function( index, value ) {
+                        $.each(allVals, function (index, value) {
                             $('table tr').filter("[data-row-id='" + value + "']").remove();
                         });
                     }
                 }
             });
-
-            $('.datatable tbody').on('click','button[data-toggle=confirmation]', function (e) {
-                e.preventDefault();
-                $('button[data-toggle=confirmation]').confirmation('show');
-                document.querySelector('a[data-apply="confirmation"]').onclick = function(){
-                    alert('xyz');
-                };
-            });
-            $(document).on('click', 'a[data-apply=confirmation]',function(e){
-                alert('abc');
-                $(this).parents('form:first').submit();
-            });
-            $('[data-toggle=confirmation]').confirmation({
-                rootSelector: '[data-toggle=confirmation]',
-            });
-
         });
     </script>
 

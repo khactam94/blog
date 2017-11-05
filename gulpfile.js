@@ -11,6 +11,23 @@ var elixir = require('laravel-elixir');
  | file for our application, as well as publishing vendor resources.
  |
  */
+gulp.task("copyfiles", function() {
+    var source = "vendor/bower_dl/";
+    var destination = 'public/vendor/';
+    var copy = {
+        'jquery/dist/jquery.js' : 'jquery',
+        'bootstrap/dist/**' : 'bootstrap',
+        'bootstrap/dist/fonts/**' : 'fonts',
+        'bootstrap/less/**' : 'less/bootstrap',
+        'fontawesome/less/**' : 'less/fontawesome',
+    };
+    var keys = Object.keys(foo);
+    // Copy jQuery, Bootstrap, and FontAwesome
+    for(srcfile in keys){
+        gulp.src(source + srcfile)
+            .pipe(gulp.dest(destination + copy[srcfile]));
+    }
+});
 
 elixir(function(mix) {
     // Combine scripts

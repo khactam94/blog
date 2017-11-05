@@ -12,10 +12,6 @@ class Post extends Model
     use SearchableTrait;
     use ImportExportTrait;
 
-    const PUBLIC_STATUS = 2;
-    const DRAFT_STATUS = 0;
-    const PRIVATE_STATUS = 1;
-
     public $fillable = [
         'title',
         'content',
@@ -78,7 +74,8 @@ class Post extends Model
      */
     public function scopePublic($query)
     {
-        return $query->where('status', self::PUBLIC_STATUS);
+        $status = array_search('approved',  config('status'));
+        return $query->where('status', $status);
     }
     /**
      * Set view

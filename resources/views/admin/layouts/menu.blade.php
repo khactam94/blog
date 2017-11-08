@@ -9,18 +9,23 @@
     </span>
     </a>
     <ul class="treeview-menu">
-        <li class="{{ Request::is('admin/posts') ? 'active' : '' }}"><a href="{{route('admin.posts.index')}}">All Posts</a></li>
+        <li class="{{ Request::is('admin/posts') ? 'active' : '' }}">
+            <a href="{{route('admin.posts.index')}}">All Posts</a></li>
         <li class="{{ Request::is('admin/status/draft') ? 'active' : '' }}">
-            <a href="{{route('admin.posts.status', ['status' => 'draft'])}}"><i class="fa fa-hand-o-right"></i><span>Draft Posts</span></a>
+            <a href="{{route('admin.posts.status', ['status' => 'draft'])}}">
+                <i class="fa fa-hand-o-right"></i><span>Draft Posts</span></a>
         </li>
         <li class="{{ Request::is('admin/status/pending') ? 'active' : '' }}">
-            <a href="{{route('admin.posts.status', ['status' => 'pending'])}}"><i class="fa fa-hand-o-right"></i><span>Pending Posts</span></a>
+            <a href="{{route('admin.posts.status', ['status' => 'pending'])}}">
+                <i class="fa fa-hand-o-right"></i><span>Pending Posts</span></a>
         </li>
         <li class="{{ Request::is('admin/status/approved') ? 'active' : '' }}">
-            <a href="{{route('admin.posts.status', ['status' => 'approved'])}}"><i class="fa fa-hand-o-right"></i><span>Approved Posts</span></a>
+            <a href="{{route('admin.posts.status', ['status' => 'approved'])}}">
+                <i class="fa fa-hand-o-right"></i><span>Approved Posts</span></a>
         </li>
         <li class="{{ Request::is('admin/status/denied') ? 'active' : '' }}">
-            <a href="{{route('admin.posts.status', ['status' => 'denied'])}}"><i class="fa fa-hand-o-right"></i><span>Denied Posts</span></a>
+            <a href="{{route('admin.posts.status', ['status' => 'denied'])}}">
+                <i class="fa fa-hand-o-right"></i><span>Denied Posts</span></a>
         </li>
     </ul>
 </li>

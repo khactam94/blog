@@ -15,8 +15,8 @@
                         @include('postdata')
                         </tbody>
                     </table>
-                    <div class="ajax-load text-center" style="display:none">
-                        <p><img src="{{ asset('images/loader.gif') }}">Loading More post</p>
+                    <div class="ajax-load text-center">
+                        <button class="btn btn-default" id="load-more">Load more</button>
                     </div>
                 </div>
             </div>
@@ -67,54 +67,9 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
-        var page = 2;
-        var isLoad = [];
-        const max_page = {{$posts->lastPage()}};
-        $(window).scroll(function() {
-            if($(window).scrollTop() + $(window).height() >= $(document).height()) {
-                if (!isLoad[page] && page <= max_page)
-                {
-                    loadMoreData(page);
-                    page++;
-                }
-                else{
-                    $('.ajax-load').show();
-                    $('.ajax-load').html("No more records found");
-                }
-            }
-        });
-
-        function loadMoreData(page){
-            var url = new URL(window.location.href);
-            var q = url.searchParams.get("q");
-            console.log(q);
-            $.ajax(
-                {
-                    url: '?'+ (q ? 'q=' + q + '&' : '' ) + 'page=' + page,
-                    type: "get",
-                    async: false,
-                    beforeSend: function()
-                    {
-                        $('.ajax-load').show();
-                    }
-                })
-                .done(function(data)
-                {
-                    if(data.html == " "){
-                        $('.ajax-load').html("No more records found");
-                        return false;
-                    }
-                    $('.ajax-load').hide();
-                    $("#post-data").append(data.html);
-                    isLoad[page] = true;
-                })
-                .fail(function(jqXHR, ajaxOptions, thrownError)
-                {
-                    alert('server not responding...');
-                });
-            return false;
-        }
-    </script>
-
+<script type="text/javascript">
+    const max_page = {{$posts->lastPage()}};
+    const loader_html = '<p><img src="{{ asset('images/loader.gif')}}">Loading More post</p>';
+</script>
+<script src="{{ asset('app/home.js') }}"></script>
 @endsection

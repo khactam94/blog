@@ -81,18 +81,7 @@ class PostRepository extends BaseRepository
         //dd($posts);
         return $posts;
     }
-    //For datatables
-    private function getActionButton($id){
-        return '<form method="POST" action="'.route('admin.posts.destroy', $id).'" accept-charset="UTF-8">'
-            .'<input name="_method" type="hidden" value="DELETE">'
-            .csrf_field()
-            .'<div class="btn-group">'
-            .'<a href="'.route("admin.posts.show", $id).'" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i></a> '
-            .'<a href="'.route('admin.posts.edit', $id).'" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></a>'
-            .'<button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(\'Are you sure?\')"><i class="glyphicon glyphicon-trash"></i></button>'
-            .'</div>'
-            .'</form>';
-    }
+
     public function getDatatable(){
         return \DataTables::of(Post::query()->select('id', 'title', 'content', 'user_id', 'status'))
             ->editColumn('content', function(Post $post) {
@@ -102,7 +91,7 @@ class PostRepository extends BaseRepository
                 return $post->user->name;
             })
             ->editColumn('status', function(Post $post) {
-                return config('status.'.$post->status);
+                return '<span class="label label-'.Post::STATUS_ITF[$post->status].'">'.Post::STATUSES[$post->status].'</span>';;
             })
             ->addColumn('action', function ($post) {
                 //return $this->getActionButton($post->id);
@@ -111,7 +100,7 @@ class PostRepository extends BaseRepository
             ->addColumn('checkbox', function ($post) {
                 return '<input type="checkbox" class="sub_chk" data-id="'.$post->id.'">';
             })
-            ->rawColumns(['action', 'checkbox'])
+            ->rawColumns(['action', 'checkbox', 'status'])
             ->setRowId(function ($post) {
                 return $post->id;
             })

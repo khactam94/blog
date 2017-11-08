@@ -77,7 +77,11 @@
                     <div class="btn-group text-left">
                     </div>
                     <div class="btn-group" style="float: right;">
-                        <button class="btn btn-danger delete_all">Delete All Selected Records</button>
+                        @if($status == 'pending')
+                        <button class="btn btn-success approve">Approve</button>
+                        <button class="btn btn-default cancel">Cancel</button>
+                        @endif
+                        <button class="btn btn-danger delete_all">Delete All</button>
                     </div>
                 </div>
             </div>

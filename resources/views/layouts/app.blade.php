@@ -113,8 +113,10 @@
         @yield('content')
     </div>
     <footer class="main-footer">
-        <strong>Copyright © 2014-2016 <a href="https://github.com/12t4bkdn/blog">Sample blog, sample laravel</a>.</strong> All rights
-        reserved.
+        <div class="container">
+        <strong>Copyright © 2014-2016 <a href="https://github.com/12t4bkdn/blog">Sample blog, sample laravel</a>.</strong>
+            All rights reserved.
+        </div>
     </footer>
     <script src="{{ asset('app/app.js')}}"></script>
     @yield('scripts')

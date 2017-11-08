@@ -12,6 +12,9 @@ class Post extends Model
     use SearchableTrait;
     use ImportExportTrait;
 
+    const STATUSES = ['draft', 'pending', 'approved', 'denied'];
+    const STATUS_ITF = ['default', 'info', 'success', 'danger'];
+
     public $fillable = [
         'title',
         'content',
@@ -74,7 +77,7 @@ class Post extends Model
      */
     public function scopePublic($query)
     {
-        $status = array_search('approved',  config('status'));
+        $status = array_search('approved',  self::STATUSES);
         return $query->where('status', $status);
     }
     /**

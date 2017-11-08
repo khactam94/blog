@@ -49,7 +49,7 @@ class PostController extends AppBaseController
     public function statusPost(Request $request, $status)
     {
         $posts = $this->postRepository->getStatusPosts($status);
-        return view('admin.posts.status', compact('posts'));
+        return view('admin.posts.status', compact('posts', 'status'));
     }
 
     public function datatable(){
@@ -62,7 +62,8 @@ class PostController extends AppBaseController
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $statuses = Post::STATUSES;
+        return view('admin.posts.create', compact('statuses'));
     }
 
     /**

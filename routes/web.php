@@ -24,6 +24,8 @@ Route::get('auth/facebook', 'Auth\AuthController@redirectToFacebook');
 Route::get('auth/facebook/callback', 'Auth\AuthController@handleFacebookCallback');
 
 Route::get('posts', 'PostController@index')->name('posts.index');
+Route::get('post/hot', 'PostController@hot')->name('posts.hot');
+Route::get('post/popular', 'PostController@popular')->name('posts.popular');
 Route::get('posts/{id}', 'PostController@show')->name('posts.show');
 Route::get('tags', 'TagController@index')->name('tags.index');
 Route::get('tags/{id}', 'TagController@show')->name('tags.show');
@@ -52,11 +54,16 @@ Route::group(['middleware' => ['auth']], function(){
 });
 //For admin
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function() {
+    Route::get('dashboard', function () {
+        return view('admin.dashboard');
+    });
 	Route::resource('posts', 'PostController', ['middleware' => 'permission:posts-manager']);
     Route::get('post/datatable', 'PostController@datatable')->name('posts.list');
     Route::get('post/status/{status}', 'PostController@statusPost')->name('posts.status')
         ->where('status', 'draft|pending|approved|denied');
     Route::delete('deleteAllPosts', 'PostController@deleteAll')->name('posts.deleteAll');
+    Route::post('post/rejectAll', 'PostController@rejectAll')->name('posts.reject');
+    Route::post('post/approveAll', 'PostController@approveAll')->name('posts.approve');
 	Route::resource('tags', 'TagController', ['middleware' => 'permission:tags-manager']);
 
 	Route::resource('categories', 'CategoryController', ['middleware' => 'permission:categories-manager']);
@@ -77,4 +84,5 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'namespace' => 'Adm
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'api', 'namespace' => 'API', 'as' => 'api.'], function() {
     Route::resource('categories', 'APICategoryController', ['only' => 'destroy', 'middleware' => 'permission:categories-manager']);
+    Route::resource('tags', 'TagAPIController', ['only' => 'store', 'middleware' => 'permission:categories-manager']);
 });

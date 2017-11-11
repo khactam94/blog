@@ -20,7 +20,7 @@
     <section class="content">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Post List</h3>
+                <h3 class="box-title">Post List <small>(Showing {{$posts->perPage()}} of {{$posts->total()}}) </small></h3>
                 <div class="box-tools">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     </button>
@@ -75,11 +75,13 @@
             <div class="box-footer clearfix">
                 <div class="row" style="margin: 10px 0px">
                     <div class="btn-group text-left">
+                        @if($status == 'pending' || $status == 'denied')
+                        <button class="btn btn-success btn-flat approve_all">Approve</button>
+                        @endif
                     </div>
                     <div class="btn-group" style="float: right;">
-                        @if($status == 'pending')
-                        <button class="btn btn-success approve">Approve</button>
-                        <button class="btn btn-default cancel">Cancel</button>
+                        @if($status == 'pending' || $status == 'approved')
+                        <button class="btn btn-default cancel_all">Cancel</button>
                         @endif
                         <button class="btn btn-danger delete_all">Delete All</button>
                     </div>
@@ -90,7 +92,6 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             var selected = [];
@@ -121,6 +122,90 @@
                         $.ajax({
                             url: '{{ route('admin.posts.deleteAll') }}',
                             type: 'DELETE',
+                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            data: 'ids=' + join_selected_values,
+                            success: function (data) {
+                                if (data['success']) {
+                                    $(".sub_chk:checked").each(function () {
+                                        $(this).parents("tr").remove();
+                                    });
+                                    alert(data['success']);
+                                } else if (data['error']) {
+                                    alert(data['error']);
+                                } else {
+                                    alert('Whoops Something went wrong!!');
+                                }
+                            },
+                            error: function (data) {
+                                alert(data.responseText);
+                            }
+                        });
+
+                        $.each(allVals, function (index, value) {
+                            $('table tr').filter("[data-row-id='" + value + "']").remove();
+                        });
+                    }
+                }
+            });
+            $('.approve_all').on('click', function (e) {
+                var allVals = [];
+                $(".sub_chk:checked").each(function () {
+                    allVals.push($(this).attr('data-id'));
+                });
+                if (allVals.length <= 0) {
+                    alert("Please select row.");
+                }
+                else {
+                    var check = confirm("Are you sure you want to delete this row?");
+                    if (check == true) {
+
+                        var join_selected_values = allVals.join(",");
+                        console.log('Delete these posts: ', join_selected_values);
+                        $.ajax({
+                            url: '{{ route('admin.posts.approve') }}',
+                            type: 'POST',
+                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            data: 'ids=' + join_selected_values,
+                            success: function (data) {
+                                if (data['success']) {
+                                    $(".sub_chk:checked").each(function () {
+                                        $(this).parents("tr").remove();
+                                    });
+                                    alert(data['success']);
+                                } else if (data['error']) {
+                                    alert(data['error']);
+                                } else {
+                                    alert('Whoops Something went wrong!!');
+                                }
+                            },
+                            error: function (data) {
+                                alert(data.responseText);
+                            }
+                        });
+
+                        $.each(allVals, function (index, value) {
+                            $('table tr').filter("[data-row-id='" + value + "']").remove();
+                        });
+                    }
+                }
+            });
+            $('.cancel_all').on('click', function (e) {
+                var allVals = [];
+                $(".sub_chk:checked").each(function () {
+                    allVals.push($(this).attr('data-id'));
+                });
+                if (allVals.length <= 0) {
+                    alert("Please select row.");
+                }
+                else {
+                    var check = confirm("Are you sure you want to delete this row?");
+                    if (check == true) {
+
+                        var join_selected_values = allVals.join(",");
+                        console.log('Delete these posts: ', join_selected_values);
+                        $.ajax({
+                            url: '{{ route('admin.posts.reject') }}',
+                            type: 'POST',
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             data: 'ids=' + join_selected_values,
                             success: function (data) {

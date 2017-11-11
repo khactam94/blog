@@ -6,6 +6,7 @@ use App\Http\Controllers\Traits\ImportExportTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Nicolaslopezj\Searchable\SearchableTrait;
+
 class Post extends Model
 {
 

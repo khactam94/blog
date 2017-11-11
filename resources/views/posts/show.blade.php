@@ -9,6 +9,14 @@
     <div class="container">
         <div class="row">
             <div class="col-md-9" style="padding: 0">
+                <ul class="pager" style="margin: 0">
+                    @if($previous != null)
+                    <li class="previous"><a href="{{route('posts.show', ['id' => $previous->id])}}" data-toggle="tooltip" title="{{ $previous->title }}">Previous</a><</li>
+                    @endif
+                    @if($next != null)
+                    <li class="next"><a href="{{route('posts.show', ['id' => $next->id])}}" data-toggle="tooltip" title="{{ $next->title }}">Next</a></li>
+                    @endif
+                </ul>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2>{{$post->title}}</h2>
@@ -52,6 +60,36 @@
             </div>
             <div class="col-md-3">
                 <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Related Post
+                    </div>
+                    <div class="panel-body" style="padding: 0">
+                        <div class="list-group">
+                        @foreach($relatedPosts as $relatedPost)
+                            <a href="{{ route('posts.show', ['id' => $relatedPost['id']]) }}" class="list-group-item">
+                                {{ $relatedPost['title'] }}
+                                <span class="badge pull-right">{{ $relatedPost['view'] }}</span>
+                            </a>
+
+                        @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Other Posts
+                    </div>
+                    <div class="panel-body" style="padding: 0">
+                        <div class="list-group">
+                            @foreach($otherPosts as $otherPost)
+                                <a href="{{ route('posts.show', ['id' => $otherPost['id']]) }}" class="list-group-item">
+                                    {{ $otherPost['title'] }}
+                                    <span class="badge pull-right">{{ $otherPost['view'] }}</span>
+                                </a>
+
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
-use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use InfyOm\Generator\Common\BaseRepository;
 
 class PostRepository extends BaseRepository
@@ -26,7 +26,50 @@ class PostRepository extends BaseRepository
     }
 
     public function getListPosts($perPage){
-        Post::orderBy('id','DESC')->paginate($perPage);
+        return Post::orderBy('id','DESC')->paginate($perPage);
+    }
+    public function searchPublicPost($key, $perPage){
+        if($key){
+            $posts = Post::public()->search($key)
+                ->with('categories')->with('tags')->orderBy('id','DESC')->paginate($perPage);
+        }
+        else{
+            $posts = Post::public()->orderBy('id','DESC')->paginate($perPage);
+        }
+        return $posts;
+    }
+    public function getHotPosts($key, $perPage){
+        if($key){
+            $posts = Post::public()->where('created_at', '>=', Carbon::now()->subMonth())->search($key)
+                ->with('categories')->with('tags')->orderBy('view','DESC')->paginate($perPage);
+        }
+        else{
+            $posts = Post::public()->where('created_at', '>=', Carbon::now()->subMonth())
+                ->orderBy('view','DESC')->paginate($perPage);
+        }
+        return $posts;
+    }
+    public function getPolularPosts($key, $perPage){
+        if($key){
+            $posts = Post::public()->search($key)
+                ->with('categories')->with('tags')->orderBy('view','DESC')->paginate($perPage);
+        }
+        else{
+            $posts = Post::public()->orderBy('view','DESC')->paginate($perPage);
+        }
+        return $posts;
+        }
+    public function getRelatedPosts(Post $post){
+        $tagIds = $post->tags->pluck('id');
+        $categoryIds = $post->categories->pluck('id');
+        $postTags = Post::public()->whereIn('id', function ($query) use ($tagIds) {
+            return $query->select('post_id')->from('tags_posts')->whereIn('tag_id', $tagIds);
+        })->select('id', 'title', 'view')->limit(5)->get()->toArray();
+        $postCategories = Post::public()->whereIn('id', function ($query) use ($categoryIds) {
+            return $query->select('post_id')->from('categories_posts')->whereIn('category_id', $categoryIds);
+        })->select('id', 'title', 'view')->limit(5)->get()->toArray();
+        $posts = array_unique(array_merge($postTags, $postCategories), SORT_REGULAR);
+        return $posts;
     }
     //My post controller
     public function searchPostsByAuthor($id, $key, $perPage){
@@ -48,20 +91,8 @@ class PostRepository extends BaseRepository
     }
     //Home controller
     public function getStatusPosts($status){
-        $statuses = config('status');
-        $id = array_search($status, $statuses);
+        $id = array_search($status, Post::STATUSES);
         $posts = Post::where('status', $id)->paginate(10);
-        return $posts;
-    }
-
-    public function searchPublicPost($key, $perPage){
-        if($key){
-            $posts = Post::public()->search($key)
-                ->with('categories')->with('tags')->orderBy('id','DESC')->paginate($perPage);
-        }
-        else{
-            $posts = Post::public()->orderBy('id','DESC')->paginate($perPage);
-        }
         return $posts;
     }
     //Import / Export data

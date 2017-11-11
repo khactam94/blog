@@ -35,7 +35,7 @@ class TagController extends AppBaseController
 
     public function search(Request $request)
     {
-        $tags = $this->tagRepository->search($request->input('q'));
+        $tags = $this->tagRepository->search($request->input('query'));
         return json_encode($tags);
     }
 

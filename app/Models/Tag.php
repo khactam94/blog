@@ -16,7 +16,7 @@ class Tag extends Model
      * @var array
      */
     public static $rules = [
-        'name' => 'required|unique'
+        'name' => 'required|unique:tags'
     ];
 
     public function posts()

@@ -103,8 +103,9 @@ class PostController extends AppBaseController
      */
     public function edit($id)
     {
+        $statuses = Post::STATUSES;
         $post = Post::findOrFail($id);
-        return view('admin.posts.edit',compact('post'));
+        return view('admin.posts.edit', compact('post', 'statuses'));
     }
 
     /**
@@ -161,6 +162,20 @@ class PostController extends AppBaseController
     {
         $ids = $request->ids;
         Post::whereIn('id',explode(",",$ids))->delete();
+        return response()->json(['success'=>"Post deleted successfully."]);
+    }
+    public function approveAll(Request $request)
+    {
+        $ids = $request->ids;
+        $status = array_search('approved', Post::STATUSES);
+        Post::whereIn('id',explode(",",$ids))->update(['status' => $status]);
+        return response()->json(['success'=>"Post deleted successfully."]);
+    }
+    public function rejectAll(Request $request)
+    {
+        $ids = $request->ids;
+        $status = array_search('denied', Post::STATUSES);
+        Post::whereIn('id',explode(",",$ids))->update(['status' => $status]);
         return response()->json(['success'=>"Post deleted successfully."]);
     }
 

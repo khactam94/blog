@@ -22,3 +22,4 @@
     @endforeach
     </tbody>
 </table>
+<div class="text-center">{{ $tags->appends(Request::only('q'))->links()}}</div>

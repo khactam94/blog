@@ -5,8 +5,13 @@
     <div class="row" style="padding-left: 50px">
         <div class="col-md-9" style="padding: 0">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h2>Post List</h2>
+                <div class="panel-heading" style="padding: 0;">
+                    <ul class="nav nav-tabs nav-justified" style="font-size: 28px;">
+                        <li class="{{ Request::is('posts*') ? 'active' : '' }}"><a href="{{route('posts.index')}}">Recently Posts</a></li></li>
+                        <li class="{{ Request::is('post/hot') ? 'active' : '' }}"><a href="{{route('posts.hot')}}">Hot Posts</a></li></li>
+                        <li class="{{ Request::is('post/popular') ? 'active' : '' }}"><a href="{{route('posts.popular')}}">Popular Posts</a></li></li>
+                    </ul>
+
                 </div>
                 <div class="panel-body" style="padding: 0">
                     @include('flash::message')
@@ -39,7 +44,10 @@
                         @endforeach
                         </tbody>
                     </table>
+                    <hr>
+                    <div class="text-center">
                     {{ $posts->appends(Request::only('q'))->render() }}
+                    </div>
                 </div>
             </div>
         </div>

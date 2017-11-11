@@ -40,8 +40,10 @@
     {!! Form::label('status', 'Status:') !!}
     {!! Form::select('status', $statuses, null, ['class' => 'form-control']) !!}
 </div>
-{!! Form::submit('submit', ['class' => 'btn btn-success']) !!}
-<a href="{!! route('admin.posts.index') !!}" class="btn btn-default">Cancel</a>
+<div class="form-group col-sm-12">
+    {!! Form::submit('submit', ['class' => 'btn btn-success']) !!}
+    <a href="{!! route('admin.posts.index') !!}" class="btn btn-default">Cancel</a>
+</div>
 
 <div class="modal fade" id="add-tag-modal" style="padding-right: 16px;" role="dialog">
     <div class="modal-dialog">
@@ -52,15 +54,13 @@
                 <h4 class="modal-title">ADD TAG</h4>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" class="form-control" name="name" placeholder="Tag">
-                    </div>
-                </form>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" name="name" placeholder="Tag">
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary pull-left" >Submit</button>
+                <button type="button" class="btn btn-primary pull-left" id="add-tag-btn">Submit</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

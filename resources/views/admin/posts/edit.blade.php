@@ -31,45 +31,14 @@
 @endsection
 
 @section('scripts')
-<script type="text/javascript">
-$(document).ready(function() {
-    $('#categorytoken').tokenfield({
-        autocomplete: {
-        source: function (request, response) {
-            jQuery.get("{{ route('categoryAjax')}}", {
-                query: request.term
-            }, function (data) {
-                 data = $.parseJSON(data);
-                /*var t = [];
-                $.each(data,function(k,v){
-                    t[k] = v.name;
-                })*/
-                response(data);
-            });
-        },
-        delay: 100
-        },
-    showAutocompleteOnFocus: true
-    });
+@section('scripts')
+    <script src="{{ asset('vendor/toastr/toastr.min.js') }}"></script>
+    <script type="text/javascript">
+        const addTagUrl = "{{ route('api.tags.store') }}";
+        const categoryAjaxUrl = "{{ route('categoryAjax') }}";
+        const tagAjaxUrl = "{{ route('tagAjax') }}";
+    </script>
+    <script src="{{ asset('app/admin/posts/create.js') }}"></script>
+@endsection
 
-    $('#tagtoken').tokenfield({
-        autocomplete: {
-        source: function (request, response) {
-            jQuery.get("{{ route('tagAjax')}}", {
-                query: request.term
-            }, function (data) {
-                data = $.parseJSON(data);
-                /*var t = [];
-                $.each(data,function(k,v){
-                    t[k] = v.name;
-                })*/
-                response(data);
-            });
-        },
-        delay: 100
-        },
-    showAutocompleteOnFocus: true
-    });
-});
-</script>
 @endsection

@@ -20,7 +20,7 @@ trait FileUploadTrait
             $oldname = $request->file($key)->getClientOriginalName();
             $filename = time() . '-' . substr($oldname, -20);
             $request->file($key)->move(public_path(config('path.avatar')), $filename);
-            if(!$oldAvatar.equalTo('default.png')){
+            if($oldAvatar && !$oldAvatar.equalTo('default.png')){
                 \File::delete(public_path(config('path.avatar').$oldAvatar));
             }
             $finalRequest = new Request(array_merge($finalRequest->all(), [$key => $filename]));

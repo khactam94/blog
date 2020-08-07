@@ -1,9 +1,12 @@
-.main-footer{
+#app > .container {
+    min-height: calc(100vh - 130px);
+}
+.main-footer {
     min-height: 50px;
     color: black;
     padding: 15px 10%;
 }
-.panel{
+.panel {
     position: relative;
     border-radius: 3px;
     background: #ffffff;
@@ -11,7 +14,7 @@
     margin-bottom: 20px;
     width: 100%;
     border-top-color: #00c0ef;
-    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 .panel .panel-heading {
     color: #444;
